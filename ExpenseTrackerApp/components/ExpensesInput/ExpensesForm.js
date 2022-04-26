@@ -152,7 +152,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
           <Picker.Item label='Food' value='Food' />
           <Picker.Item label='Hobby' value='Hobby' />
           <Picker.Item label='Household' value='Household' />
-          <Picker.Item label='Stationary' value='Stationary' />
+          <Picker.Item label='Stationery' value='Stationery' />
           <Picker.Item label='Social' value='Social' />
           <Picker.Item label='Transport' value='Transport' />
         </Picker>

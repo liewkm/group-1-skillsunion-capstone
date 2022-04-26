@@ -8,13 +8,16 @@ LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import ExpensesForm from "../components/ExpensesInput/ExpensesForm";
 import IconButton from "../components/commonUI/IconButton";
+import LoadingOverlay from '../components/commonUI/LoadingOverlay';
+import ErrorOverlay from '../components/commonUI/ErrorOverlay';
 import { ExpensesContext } from "./../store/ExpensesContext";
 import { GlobalColors } from "../utilities/colors";
+import { deleteExpense, postExpense } from '../utilities/api';
 import {
   REMOVE_EXPENSE,
   EDIT_EXPENSE,
@@ -23,44 +26,91 @@ import {
 
 function ManageExpense({ route, navigation }) {
   const { expenses, dispatch } = useContext(ExpensesContext);
+  
+  const [isSaving, setIsSaving] = useState(false)
+  const [error, setError] = useState()
 
   const editedExpenseId = route.params?.expenseId; // Optional chaining
   const isEditing = !!editedExpenseId; // Convert value to boolean
 
   const selectedExpense = expenses.find((exp) => exp.id === editedExpenseId);
 
+  //---
+  // Error handler
+  //---
+  const errorHandler = () => {
+    setError(false);
+  };
+
+
+  //---
+  // Cancel handler
+  //---
+  const cancelHandler = () => {
+    navigation.goBack();
+  };
+  
+  //---
+  // Confirm  handler
+  //---
+  const confirmHandler = async (expenseData) => {
+    console.log("expenseData : ", expenseData);
+    setIsSaving(true)
+    try {
+      if (isEditing) {
+        dispatch({
+          type: EDIT_EXPENSE,
+          payload: {
+            id: editedExpenseId,
+            data: expenseData,
+          },
+        })
+        await updateExpense(editedExpenseId, expenseData)
+      } else {
+        const id = await postExpense(expenseData)
+        // dispatch({ type: ADD_EXPENSE, payload: expenseData });
+        dispatch({ type: ADD_EXPENSE, payload: {...expenseData, id: id} });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError(`Could not ${isEditing ? 'update' : 'add'} expense`)
+      setIsSaving(false)
+    }
+  };
+  
+  //---
+  // Delete handler
+  //---
+  const deleteExpenseHandler = async () => {
+    setIsSaving(true)
+    try {
+      await deleteExpense(editedExpenseId)
+      dispatch({ type: REMOVE_EXPENSE, payload: editedExpenseId });
+      navigation.goBack();
+    } catch (error) {
+      setError('Could not delete expense!')
+      setIsSaving(false)
+    }
+  };
+  
+  //---
+  // Hooks
+  //---
   useEffect(() => {
     navigation.setOptions({
       title: isEditing ? "Edit Expense" : "Add Expense",
     });
   }, [navigation, isEditing]);
 
-  const cancelHandler = () => {
-    navigation.goBack();
-  };
-
-  const confirmHandler = (expenseData) => {
-    // console.log("isEditing : ", isEditing);
-    console.log("expenseData : ", expenseData);
-
-    if (isEditing) {
-      dispatch({
-        type: EDIT_EXPENSE,
-        payload: {
-          id: editedExpenseId,
-          data: expenseData,
-        },
-      });
-    } else {
-      dispatch({ type: ADD_EXPENSE, payload: expenseData });
-    }
-    navigation.goBack();
-  };
-
-  const deleteExpenseHandler = () => {
-    dispatch({ type: REMOVE_EXPENSE, payload: editedExpenseId });
-    navigation.goBack();
-  };
+  //---
+  // Conditional rendering
+  //---
+  if (error && !isSaving) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />
+  }
+  if (isSaving) {
+    return <LoadingOverlay />
+  }
 
   return (
     <View style={styles.container}>

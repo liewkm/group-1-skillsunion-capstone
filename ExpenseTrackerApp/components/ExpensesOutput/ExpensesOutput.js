@@ -32,6 +32,7 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
       array.push(item.category);
     });
     const unique = [...new Set(array)];
+    console.log('useEffect->unique:', unique);
     setPickerItems(unique)
 
   }, [expenses])
@@ -39,13 +40,13 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   // Updates selected category item from dropdown menu
   
   useEffect(() => {
-    console.log('ExpensesOutput: pickerValue', pickerValue);
+    console.log('ExpensesOutput-->pickerValue', pickerValue);
 
     const filteredCategoryItems = expenses.filter((expense) => {
       return expense.category === pickerValue;
     });
 
-    console.log(filteredCategoryItems)
+    console.log('ExpensesOutput-->filteredCategoryItems', filteredCategoryItems)
     setFiltered([...filteredCategoryItems])
   }, [pickerValue, expenses])
 

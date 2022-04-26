@@ -3,9 +3,10 @@
 ----*/
 
 // Import dispatch constants {action.type} into consumer components
-export const ADD_EXPENSE = "ADD_EXPENSE";
-export const REMOVE_EXPENSE = "REMOVE_EXPENSE";
-export const EDIT_EXPENSE = "EDIT_EXPENSE";
+export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const REMOVE_EXPENSE = 'REMOVE_EXPENSE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const GET_ALL_EXPENSE = 'GET_EXPENSE';
 
 /*
   Reducer function receives 2 arguments:
@@ -16,12 +17,14 @@ export const EDIT_EXPENSE = "EDIT_EXPENSE";
 */
 
 function ExpensesReducer(state, action) {
+  console.log('ExpensesReducer->action', action);
   switch (action.type) {
     // payload -> new expense data
 
     case ADD_EXPENSE:
-      const newId = new Date();
-      return [{ ...action.payload, id: newId }, ...state];
+      // const newId = new Date();
+      // return [{ ...action.payload, id: newId }, ...state];
+      return [action.payload, ...state];
 
     // payload.id   -> ID of item to edit
     // payload.data -> edited expense data
@@ -49,6 +52,11 @@ function ExpensesReducer(state, action) {
       // indicated in action.payload
       return state.filter((expense) => expense.id !== action.payload);
 
+    // payload --> array of expenses data fetched from server
+
+    case GET_ALL_EXPENSE:
+      return action.payload.reverse()
+    
     default:
       return state;
   }
