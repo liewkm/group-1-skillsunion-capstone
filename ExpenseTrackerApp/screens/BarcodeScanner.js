@@ -2,10 +2,10 @@ import { View, Text, StyleSheet, Button } from 'react-native'
 import { useState, useEffect } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 
-function BarcodeScanner() {
+function BarcodeScanner({ scanHandler }) {
   const [cameraPermission, setCameraPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
-  const [upc, setUpc] = useState('No UPC scanned')
+  // const [upc, setUpc] = useState('No UPC scanned')
   
   const askCameraPermission = () => {
     (async () => {
@@ -20,7 +20,8 @@ function BarcodeScanner() {
 
   const barCodeScannerHandler = ({ type, data }) => {
     setScanned(true)
-    setUpc(data)
+    // setUpc(data)
+    scanHandler(data)
     console.log(`Type: ${type} UPC data: ${data}`);
   }
 
@@ -47,7 +48,7 @@ function BarcodeScanner() {
           onBarCodeScanned={scanned ? undefined : barCodeScannerHandler}
           style={{ height: 400, width: 400 }} />
       </View>
-      <Text style={styles.text}>{upc}</Text>
+      {/* <Text style={styles.text}>{upc}</Text> */}
 
       {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
     </View>

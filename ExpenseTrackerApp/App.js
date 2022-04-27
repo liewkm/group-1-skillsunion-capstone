@@ -47,13 +47,13 @@ export default function App() {
                 presentation: 'modal',
               }}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name='BarcodeScanner'
               component={BarcodeScanner}
               options={{
                 presentation: 'modal',
               }}
-            />
+            /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </ExpensesContextProvider>

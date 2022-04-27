@@ -17,7 +17,7 @@ import LoadingOverlay from '../components/commonUI/LoadingOverlay';
 import ErrorOverlay from '../components/commonUI/ErrorOverlay';
 import { ExpensesContext } from "./../store/ExpensesContext";
 import { GlobalColors } from "../utilities/colors";
-import { deleteExpense, postExpense } from '../utilities/api';
+import { deleteExpense, postExpense } from '../api/expenses-api';
 import {
   REMOVE_EXPENSE,
   EDIT_EXPENSE,
