@@ -22,7 +22,7 @@ import {
   REMOVE_EXPENSE,
   EDIT_EXPENSE,
   ADD_EXPENSE,
-} from "../reducers/ExpensesReducer";
+} from "../store/ExpensesReducer";
 
 function ManageExpense({ route, navigation }) {
   const { expenses, dispatch } = useContext(ExpensesContext);
