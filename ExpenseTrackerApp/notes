@@ -1,0 +1,10 @@
+https://www.youtube.com/watch?v=ql4J6SpLXZA&t=92s
+
+npm install @ract-navigation/native
+
+expo install react-native-screens react-native-safe-area-context
+
+npm install @react-navigation/native-stack
+
+expo install firebase
+
