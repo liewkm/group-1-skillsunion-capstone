@@ -1,10 +1,19 @@
 https://www.youtube.com/watch?v=ql4J6SpLXZA&t=92s
 
-npm install @ract-navigation/native
+Documentation: https://reactnavigation.org/docs/hello-react-navigation
 
-expo install react-native-screens react-native-safe-area-context
+https://firebase.google.com/?gclsrc=ds&gclsrc=ds&gclid=CJKeisrns_cCFUPi1AodB6QMng
+
+npm install @react-navigation/native
+
+expo install react-native-screens 
+
+npm install react-native-safe-area-context
 
 npm install @react-navigation/native-stack
 
 expo install firebase
 
+npm install @react-native-async-storage/async-storage
+
+expo doctor --fix-dependencies
