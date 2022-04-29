@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
+// import { Select } from "native-base";
 import { StyleSheet, Text, View } from 'react-native';
 
 import { GlobalColors } from '../../utilities/colors';
@@ -53,6 +54,11 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   return (
     <View style={styles.container}>
       <ExpensesSummary expenses={filtered} periodName={expensesPeriod} />
+      {/* <Center>
+        <Box>
+          
+        </Box>
+      </Center> */}
       <Picker
         selectedValue={pickerValue}
         style={{color: 'white'}}

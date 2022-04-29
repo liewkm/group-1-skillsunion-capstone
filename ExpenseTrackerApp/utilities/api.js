@@ -2,9 +2,9 @@
   API controller methods
 ----*/
 
-import axios from 'axios'
+import axios from 'axios';
 
-const BACKEND_URL = 'https://udemy-expenses-default-rtdb.asia-southeast1.firebasedatabase.app'
+const BACKEND_URL = 'https://rn-skillsunion-capstone-default-rtdb.asia-southeast1.firebasedatabase.app';
 
 //----
 // HTTP POST method to add new expenses
