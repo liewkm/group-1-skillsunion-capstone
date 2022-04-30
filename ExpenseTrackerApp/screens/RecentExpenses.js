@@ -6,6 +6,8 @@ import { GET_ALL_EXPENSE } from '../reducers/ExpensesReducer';
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 import ErrorOverlay from '../components/commonUI/ErrorOverlay'
 import LoadingOverlay from '../components/commonUI/LoadingOverlay'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function RecentExpenses() {
   const { expenses, dispatch } = useContext(ExpensesContext);

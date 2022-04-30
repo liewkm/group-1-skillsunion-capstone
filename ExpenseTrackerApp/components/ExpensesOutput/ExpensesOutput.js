@@ -9,6 +9,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { GlobalColors } from '../../utilities/colors';
 import ExpensesList from './ExpensesList';
 import ExpensesSummary from './ExpensesSummary';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   const [pickerValue, setPickerValue] = useState(null)

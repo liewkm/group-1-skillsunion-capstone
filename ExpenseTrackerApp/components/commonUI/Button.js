@@ -4,6 +4,8 @@
 
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "../../utilities/colors";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function Button({ children, onPress, mode, style }) {
   return (

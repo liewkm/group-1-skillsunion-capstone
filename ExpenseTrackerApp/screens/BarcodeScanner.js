@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, Button } from 'react-native'
 import { useState, useEffect } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function BarcodeScanner() {
   const [cameraPermission, setCameraPermission] = useState(null)

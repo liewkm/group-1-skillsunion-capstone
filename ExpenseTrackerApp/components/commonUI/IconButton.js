@@ -4,6 +4,8 @@
 
 import { Pressable, View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function IconButton({ icon, color, size, onPress }) {
   return (

@@ -5,6 +5,8 @@
 import { View, Text, StyleSheet } from 'react-native';
 
 import { GlobalColors } from '../../utilities/colors';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function ExpensesSummary({ expenses, periodName }) {
   const expensesSum = expenses.reduce((sum, expense) => {

@@ -3,6 +3,8 @@
 ----*/
 
 import { LogBox } from 'react-native';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',

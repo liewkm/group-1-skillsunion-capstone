@@ -1,5 +1,7 @@
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import { GlobalColors } from '../../utilities/colors'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function LoadingOverlay() {
   return (

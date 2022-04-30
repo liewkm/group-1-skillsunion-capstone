@@ -5,6 +5,8 @@
 import { FlatList } from 'react-native';
 
 import ExpenseItem from './ExpenseItem';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function renderExpenseItem(itemData) {
   return <ExpenseItem {...itemData.item} />;

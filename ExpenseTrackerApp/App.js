@@ -1,63 +1,110 @@
-/*---- 
-  NTU-SDI Cohort 3 (2022)
-  Group 1 Project Module 4: Expense Tracker App 
-  Group Members:
-    King Mann
-    Maniraja
-    Charles
-    Leslie
-    Keith
-    CP
-----*/
 
-
-import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { View, Text,Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-
-import { GlobalColors } from './utilities/colors';
-import ExpensesContextProvider from './store/ExpensesContext';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from "./screens/Login"
+import HomeScreen from "./screens/Home"
+import SignUpScreen from "./screens/SignUp"
+// import * as firebase from 'firebase';
+// import "firebase/auth";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import ExpensesOverview from './screens/ExpensesOverview';
 import ManageExpense from './screens/ManageExpense';
 import BarcodeScanner from './screens/BarcodeScanner';
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+function App() {
+
+
+
+
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA46D9SsuqZDoW_7zegzhxRqOomgoaxM6o",
+    authDomain: "expence-a2da3.firebaseapp.com",
+    projectId: "expence-a2da3",
+    storageBucket: "expence-a2da3.appspot.com",
+    messagingSenderId: "76323240906",
+    appId: "1:76323240906:web:e879e4403e9aa2832a6d33"
+  };
+
+
+
+  //Checking if firebase has been initialized
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  } else {
+    firebase.app();
+  }
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user != null) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false);
+    }
+  });
+
+
+
   return (
-    <>
-      <StatusBar style='light' />
-      <ExpensesContextProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerStyle: { backgroundColor: GlobalColors.primary500 },
-              headerTintColor: 'white',
-            }}
-          >
+    <NavigationContainer>
+      {isLoggedIn ? <Stack.Navigator>
+
+        {/* <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ headerShown: false }} 
+          /> */}
+
+
             <Stack.Screen
               name='ExpensesOverview'
               component={ExpensesOverview}
               options={{ headerShown: false }}
             />
-            <Stack.Screen
+              <Stack.Screen
               name='ManageExpense'
               component={ManageExpense}
               options={{
                 presentation: 'modal',
               }}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name='BarcodeScanner'
               component={BarcodeScanner}
               options={{
                 presentation: 'modal',
               }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </ExpensesContextProvider>
-    </>
+            />     */}
+
+
+
+      </Stack.Navigator> :
+        <Stack.Navigator>
+
+          <Stack.Screen 
+          name="Login" 
+          component={LoginScreen} 
+          options={{ headerShown: false }} 
+          />
+
+          <Stack.Screen 
+          name="Sign Up" 
+          component={SignUpScreen} 
+          options={{ headerShown: false }} 
+          />
+
+        </Stack.Navigator>}
+    </NavigationContainer>
   );
 }
 
+export default App;

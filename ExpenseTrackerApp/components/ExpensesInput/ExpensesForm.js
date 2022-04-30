@@ -18,6 +18,8 @@ import { getFormattedDate } from "../../utilities/helpers.js";
 import Button from "../commonUI/Button.js";
 import Input from "./Input";
 import IconButton from "../commonUI/IconButton";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navigation }) {
   const [validAmount, setValidAmount] = useState(true);

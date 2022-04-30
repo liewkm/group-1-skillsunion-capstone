@@ -4,6 +4,8 @@
 
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { GlobalColors } from "../../utilities/colors";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function Input({ inputLabel, inputConfig, style, invalid }) {
   const inputStyles = [styles.input];

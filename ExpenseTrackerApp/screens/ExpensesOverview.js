@@ -7,6 +7,8 @@ import { GlobalColors } from "../utilities/colors";
 import IconButton from "../components/commonUI/IconButton";
 import AllExpenses from "./AllExpenses";
 import RecentExpenses from "./RecentExpenses";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const BottomTabs = createBottomTabNavigator();

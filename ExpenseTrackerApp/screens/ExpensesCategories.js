@@ -1,4 +1,6 @@
 import { View, Text } from "react-native";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 // Liew's comment: Confirm whether ExpenseForm has Category Input or not.
 

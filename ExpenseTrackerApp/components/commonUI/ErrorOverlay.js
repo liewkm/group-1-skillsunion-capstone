@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet } from 'react-native'
 import { GlobalColors } from '../../utilities/colors'
 import Button from './Button'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function ErrorOverlay({ message, onConfirm }) {
   return (

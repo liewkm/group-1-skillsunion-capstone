@@ -4,6 +4,8 @@
 
 import { createContext, useReducer } from 'react';
 import ExpensesReducer from '../reducers/ExpensesReducer';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 // Create context objext
 

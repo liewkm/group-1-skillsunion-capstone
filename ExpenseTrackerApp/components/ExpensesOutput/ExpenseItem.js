@@ -7,6 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { GlobalColors } from '../../utilities/colors';
 import { getFormattedDate } from '../../utilities/helpers';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function ExpenseItem({ id, description, amount, date }) {
   const navigation = useNavigation();
