@@ -1,28 +1,21 @@
 
 import React, { useState } from 'react';
-import { View, Text,Button } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ExpensesContextProvider from './store/ExpensesContext';
+import HandleSignOut from './screens/Signout';
 import LoginScreen from "./screens/Login"
-import HomeScreen from "./screens/Home"
 import SignUpScreen from "./screens/SignUp"
-// import * as firebase from 'firebase';
-// import "firebase/auth";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import ExpensesOverview from './screens/ExpensesOverview';
 import ManageExpense from './screens/ManageExpense';
 import BarcodeScanner from './screens/BarcodeScanner';
 
-
-
 const Stack = createNativeStackNavigator();
 
 function App() {
-
-
-
-
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -35,9 +28,6 @@ function App() {
     appId: "1:76323240906:web:e879e4403e9aa2832a6d33"
   };
 
-
-
-  //Checking if firebase has been initialized
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   } else {
@@ -52,18 +42,14 @@ function App() {
     }
   });
 
-
-
   return (
+    <>
+    <StatusBar style='light' />
+    <ExpensesContextProvider>
+
     <NavigationContainer>
+    
       {isLoggedIn ? <Stack.Navigator>
-
-        {/* <Stack.Screen 
-          name="Home" 
-          component={HomeScreen} 
-          options={{ headerShown: false }} 
-          /> */}
-
 
             <Stack.Screen
               name='ExpensesOverview'
@@ -77,15 +63,21 @@ function App() {
                 presentation: 'modal',
               }}
             />
-            {/* <Stack.Screen
+            <Stack.Screen
               name='BarcodeScanner'
               component={BarcodeScanner}
               options={{
                 presentation: 'modal',
               }}
-            />     */}
+            />    
 
-
+            <Stack.Screen
+              name='Signout'
+              component={HandleSignOut}
+              options={{
+                presentation: 'modal',
+              }}
+            />        
 
       </Stack.Navigator> :
         <Stack.Navigator>
@@ -104,6 +96,8 @@ function App() {
 
         </Stack.Navigator>}
     </NavigationContainer>
+    </ExpensesContextProvider>
+    </>
   );
 }
 

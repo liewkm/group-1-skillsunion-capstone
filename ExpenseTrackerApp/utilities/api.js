@@ -1,7 +1,8 @@
 /*----  
   API controller methods
 ----*/
-
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import axios from 'axios'
 
 const BACKEND_URL = 'https://udemy-expenses-default-rtdb.asia-southeast1.firebasedatabase.app'

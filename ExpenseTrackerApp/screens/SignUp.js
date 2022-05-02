@@ -47,7 +47,7 @@ export default function SignUpScreen({ navigation }) {
             alert("Passwords are different!")
         }
     }
-
+   
     return <View style={styles.view}>
         <Text style={{ fontSize: 34, fontWeight: "800", marginBottom: 20 }}>Sign Up</Text>
         <TextBox placeholder="Email Address" onChangeText={text => handleChange(text, "email")} />

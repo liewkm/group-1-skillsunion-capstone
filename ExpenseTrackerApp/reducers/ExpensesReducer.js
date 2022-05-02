@@ -2,6 +2,9 @@
   Reducers for expense context methods
 ----*/
 
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+
 // Import dispatch constants {action.type} into consumer components
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const REMOVE_EXPENSE = 'REMOVE_EXPENSE';

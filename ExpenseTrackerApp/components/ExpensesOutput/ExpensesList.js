@@ -2,6 +2,8 @@
   Expenses list
 ----*/
 
+
+
 import { FlatList } from 'react-native';
 
 import ExpenseItem from './ExpenseItem';
