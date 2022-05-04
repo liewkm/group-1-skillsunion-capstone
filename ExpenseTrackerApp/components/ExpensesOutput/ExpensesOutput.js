@@ -2,19 +2,19 @@
   Expenses output
 ----*/
 
-import { useEffect, useState } from 'react';
-import { Picker } from '@react-native-picker/picker';
+import { useEffect, useState } from "react";
+import { Picker } from "@react-native-picker/picker";
 // import { Select } from "native-base";
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from "react-native";
 
-import { GlobalColors } from '../../utilities/colors';
-import ExpensesList from './ExpensesList';
-import ExpensesSummary from './ExpensesSummary';
+import { GlobalColors } from "../../utilities/colors";
+import ExpensesList from "./ExpensesList";
+import ExpensesSummary from "./ExpensesSummary";
 
 function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
-  const [pickerValue, setPickerValue] = useState(null)
-  const [pickerItems, setPickerItems] = useState([])
-  const [filtered, setFiltered] = useState([...expenses])
+  const [pickerValue, setPickerValue] = useState(null);
+  const [pickerItems, setPickerItems] = useState([]);
+  const [filtered, setFiltered] = useState([...expenses]);
 
   // console.log(expenses)
   // console.log(filtered)
@@ -24,32 +24,34 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   if (expenses.length > 0) {
     content = <ExpensesList expenses={filtered} />;
   }
-  
+
   // Filters out category items into an array for dropdown menu
-  
+
   useEffect(() => {
     let array = [];
     expenses.forEach((item) => {
       array.push(item.category);
     });
     const unique = [...new Set(array)];
-    console.log('useEffect->unique:', unique);
-    setPickerItems(unique)
-
-  }, [expenses])
+    console.log("useEffect->unique:", unique);
+    setPickerItems(unique);
+  }, [expenses]);
 
   // Updates selected category item from dropdown menu
-  
+
   useEffect(() => {
-    console.log('ExpensesOutput-->pickerValue', pickerValue);
+    console.log("ExpensesOutput-->pickerValue", pickerValue);
 
     const filteredCategoryItems = expenses.filter((expense) => {
       return expense.category === pickerValue;
     });
 
-    console.log('ExpensesOutput-->filteredCategoryItems', filteredCategoryItems)
-    setFiltered([...filteredCategoryItems])
-  }, [pickerValue, expenses])
+    console.log(
+      "ExpensesOutput-->filteredCategoryItems",
+      filteredCategoryItems
+    );
+    setFiltered([...filteredCategoryItems]);
+  }, [pickerValue, expenses]);
 
   return (
     <View style={styles.container}>
@@ -61,14 +63,14 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
       </Center> */}
       <Picker
         selectedValue={pickerValue}
-        style={{color: 'white'}}
-        dropdownIconColor={'white'}
+        style={{ color: "white" }}
+        dropdownIconColor={"white"}
         onValueChange={(value, index) => setPickerValue(value)}
       >
         {pickerItems.map((item, index) => {
-          return <Picker.Item key={index} label={item} value={item} /> 
+          return <Picker.Item key={index} label={item} value={item} />;
         })}
-      </Picker>      
+      </Picker>
       {content}
     </View>
   );
@@ -85,9 +87,9 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalColors.primary700,
   },
   infoText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 32,
   },
 });
