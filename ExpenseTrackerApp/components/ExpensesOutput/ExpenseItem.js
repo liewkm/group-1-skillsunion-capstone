@@ -23,13 +23,13 @@ function ExpenseItem({ id, description, amount, date }) {
       style={({ pressed }) => pressed && styles.pressed}
     >
       <View style={styles.expenseItem}>
-        <View>
-          <Text style={[styles.textBase, styles.description]}>
+        <View flex={4} marginRight={12} >
+          <Text numberOfLines={1} style={[styles.textBase, styles.description]}>
             {description}
           </Text>
           <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
         </View>
-        <View style={styles.amountContainer}>
+        <View flex={1} style={styles.amountContainer}>
           <Text style={styles.amount}>{amount.toFixed(2)}</Text>
         </View>
       </View>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
-    minWidth: 80,
+    // minWidth: 50,
   },
   amount: {
     color: GlobalColors.primary500,

@@ -179,6 +179,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
           style={styles.picker}
           dropdownIconColor={GlobalColors.primary100}
           onValueChange={(itemValue) => {
+            console.log('itemValue', itemValue)
             setInputs((current) => {
               return { ...current, ['category']: itemValue };
             });
