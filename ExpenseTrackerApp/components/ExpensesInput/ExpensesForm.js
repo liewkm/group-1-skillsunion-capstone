@@ -147,7 +147,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
           }}
         >
           <Picker.Item label='Please select category:' enabled={false} />
-          <Picker.Item label='All Categories' value='null' />
           <Picker.Item label='Clothing' value='Clothing' />
           <Picker.Item label='Computing Hardware' value='Computing Hardware' />
           <Picker.Item label='Food' value='Food' />
