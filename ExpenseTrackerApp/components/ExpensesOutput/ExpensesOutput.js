@@ -21,10 +21,8 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText, isAllCategorie
   // Check if there is any expense yet.
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
-  // LKM: Can I include some logic here to switch between <ExpensesList expenses={expenses} /> and <ExpensesList expenses={filtered} />?
+  // Check if database (expenses) exists? If yes, (a) list All Categories (b) list Selected Category. Else fallbackText.  
   if (expenses.length > 0) {
-  // if (expenses.length > 0 && expenses.category === pickerValue)
-    // content = <ExpensesList expenses={expenses} />;
     if (isAllCategories) {
       content = <ExpensesList expenses={expenses} />
     } else
@@ -62,7 +60,12 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText, isAllCategorie
 
   return (
     <View style={styles.container}>
-      <ExpensesSummary expenses={filtered} periodName={expensesPeriod} />
+      {isAllCategories &&
+        <ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
+      }
+      {!isAllCategories &&
+        <ExpensesSummary expenses={filtered} periodName={expensesPeriod} />
+      }
       {!isAllCategories && 
         <Picker
           selectedValue={pickerValue}
