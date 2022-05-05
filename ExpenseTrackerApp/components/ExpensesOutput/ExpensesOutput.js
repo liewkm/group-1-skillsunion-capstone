@@ -15,13 +15,17 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   const [pickerItems, setPickerItems] = useState([]);
   const [filtered, setFiltered] = useState([...expenses]);
 
-  console.log(expenses)
+  // console.log(expenses)
   // console.log(filtered)
 
+  // Check if there is any expense yet.
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
+  // LKM: Can I include some logic here to switch between <ExpensesList expenses={expenses} /> and <ExpensesList expenses={filtered} />?
   if (expenses.length > 0) {
-    content = <ExpensesList expenses={filtered} />;
+  // if (expenses.length > 0 && expenses.category === pickerValue)
+    content = <ExpensesList expenses={expenses} />;
+    // content = <ExpensesList expenses={filtered} />;
   }
 
   // Filters out category items into an array for dropdown menu
