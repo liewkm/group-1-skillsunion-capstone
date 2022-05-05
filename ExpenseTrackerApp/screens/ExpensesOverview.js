@@ -32,13 +32,35 @@ function ExpensesOverview() {
       })}
     >
       <BottomTabs.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          title: 'Home',
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <BottomTabs.Screen
         name="RecentExpenses"
         component={RecentExpenses}
         options={{
-          title: "Recent Expenses",
-          tabBarLabel: "Recent",
+          title: 'Recent Expenses',
+          tabBarLabel: 'Recent',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="time-sharp" size={size} color={color} />
+            <Ionicons name="hourglass" size={size} color={color} />
+          ),
+        }}
+      />
+      <BottomTabs.Screen
+        name="ExpensesCategories"
+        component={ExpensesCategories}
+        options={{
+          title: 'Expenses Categories',
+          tabBarLabel: 'Categories',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list" size={size} color={color} />
           ),
         }}
       />
@@ -46,10 +68,10 @@ function ExpensesOverview() {
         name="AllExpenses"
         component={AllExpenses}
         options={{
-          title: "All Expenses",
-          tabBarLabel: "All",
+          title: 'All Expenses',
+          tabBarLabel: 'All Expenses',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="archive-sharp" size={size} color={color} />
+            <Ionicons name="calendar" size={size} color={color} />
           ),
         }}
       />
