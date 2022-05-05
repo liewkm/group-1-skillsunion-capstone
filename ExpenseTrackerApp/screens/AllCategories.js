@@ -9,6 +9,7 @@ function AllCategories() {
       expenses={expenses}
       expensesPeriod="Total"
       fallbackText="No Expenses Yet."
+      isAllCategories={true}
     />
   );
 }

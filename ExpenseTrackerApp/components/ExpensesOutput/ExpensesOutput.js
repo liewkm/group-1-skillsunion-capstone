@@ -10,7 +10,7 @@ import { GlobalColors } from "../../utilities/colors";
 import ExpensesList from "./ExpensesList";
 import ExpensesSummary from "./ExpensesSummary";
 
-function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
+function ExpensesOutput({ expenses, expensesPeriod, fallbackText, isAllCategories }) {
   const [pickerValue, setPickerValue] = useState(null);
   const [pickerItems, setPickerItems] = useState([]);
   const [filtered, setFiltered] = useState([...expenses]);
@@ -24,8 +24,11 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   // LKM: Can I include some logic here to switch between <ExpensesList expenses={expenses} /> and <ExpensesList expenses={filtered} />?
   if (expenses.length > 0) {
   // if (expenses.length > 0 && expenses.category === pickerValue)
-    content = <ExpensesList expenses={expenses} />;
-    // content = <ExpensesList expenses={filtered} />;
+    // content = <ExpensesList expenses={expenses} />;
+    if (isAllCategories) {
+      content = <ExpensesList expenses={expenses} />
+    } else
+      content = <ExpensesList expenses={filtered} />
   }
 
   // Filters out category items into an array for dropdown menu
@@ -35,6 +38,7 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
     expenses.forEach((item) => {
       array.push(item.category);
     });
+    console.log('array', array);
     const unique = [...new Set(array)];
     console.log("useEffect->unique:", unique);
     setPickerItems(unique);
@@ -59,17 +63,18 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   return (
     <View style={styles.container}>
       <ExpensesSummary expenses={filtered} periodName={expensesPeriod} />
-    
-      <Picker
-        selectedValue={pickerValue}
-        style={{ color: "white" }}
-        dropdownIconColor={"white"}
-        onValueChange={(value, index) => setPickerValue(value)}
-      >
-        {pickerItems.map((item, index) => {
-          return <Picker.Item key={index} label={item} value={item} />;
-        })}
-      </Picker>
+      {!isAllCategories && 
+        <Picker
+          selectedValue={pickerValue}
+          style={{ color: "white" }}
+          dropdownIconColor={"white"}
+          onValueChange={(value, index) => setPickerValue(value)}
+        >
+          {pickerItems.map((item, index) => {
+            return <Picker.Item key={index} label={item} value={item} />;
+          })}
+        </Picker>
+      }
       {content}
     </View>
   );
