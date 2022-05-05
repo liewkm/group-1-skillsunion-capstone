@@ -52,7 +52,8 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [upcList, setUpcList] = useState([])
 
   // State for BarcodeScanner
-  const [upc, setUpc] = useState(null)
+  const [upc, setUpc] = useState(null);                 // UPC String
+  const [isUpcFound, setIsUpcFound] = useState(true);   // Is the UPC in database (true/false)
 
   // State for camera modal window 
   const [isCameraVisible, setIsCameraVisible] = useState(false);
@@ -110,16 +111,21 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   };
 
   const scanHandler = (upc) => {
-    console.log('scanHandler:', upc, typeof(upc));
-    setUpc(upc)
+    console.log('scanHandler->upc:', upc, typeof(upc));
+    setUpc(upc);
     const index = upcList.findIndex((item) => item.upc === upc)
-    console.log(index);
-    setInputs({
-      date: getFormattedDate(date),
-      category: upcList[index].category,
-      description: upcList[index].description,
-      amount: upcList[index].price.toString()
-    })
+    console.log('scanHandler->index:', index);
+    if (index > 0) {
+      setIsUpcFound(true);
+      setInputs({
+        date: getFormattedDate(date),
+        category: upcList[index].category,
+        description: upcList[index].description,
+        amount: upcList[index].price.toString()
+      })
+    } else {
+      setIsUpcFound(false);
+    }
   }
 
   // Setup UPC list on component mount
@@ -235,7 +241,12 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           {submitBtnLabel}
         </Button>
       </View>
-      <Text style={styles.label}>UPC Scanned: {upc}</Text>
+      {upc && 
+        <Text style={styles.text}>UPC scanned: {upc}</Text>
+      }
+      {!isUpcFound && 
+        <Text style={styles.text}>NOT FOUND!</Text>
+      }
 
       <Modal 
         animationType='fade'
@@ -268,7 +279,9 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 }
 
 const styles = StyleSheet.create({
-  container: { marginTop: 10 },
+  container: { 
+    marginTop: 0 
+  },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -301,6 +314,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 8,
     marginLeft: 8,
+    color: GlobalColors.primary100,
+  },
+  text: {
+    fontSize: 16,
+    marginVertical: 8,
+    textAlign: 'center',
     color: GlobalColors.primary100,
   },
   picker: {
