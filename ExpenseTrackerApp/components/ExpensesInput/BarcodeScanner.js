@@ -2,7 +2,8 @@ import { View, Text, StyleSheet, Button } from 'react-native'
 import { useState, useEffect } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 
-function BarcodeScanner() {
+function BarcodeScanner({scanHandler, setIsCameraVisible}) {
+  
   const [cameraPermission, setCameraPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
   const [upc, setUpc] = useState('No UPC scanned')
@@ -13,16 +14,32 @@ function BarcodeScanner() {
         setCameraPermission(status === 'granted')
     })() 
   }
+  const barCodeScannerHandler = ({ type, data }) => {
+    setScanned(true);
+    // setUpc(data)
+    scanHandler(data);
+    console.log(`Type: ${type} UPC data: ${data}`);
+    setIsCameraVisible(false);
+  }
 
-  useEffect( () => {
+  // Ask for camera permission on component mount
+  useEffect(() => {
     askCameraPermission();
   }, [])
 
-  const barCodeScannerHandler = ({ type, data }) => {
-    setScanned(true)
-    setUpc(data)
-    console.log(`Type: ${type} UPC data: ${data}`);
-  }
+  // Return to input form with UPC data when scan successful
+/*
+  useEffect(() => {
+    if (scanned) {
+      console.log('BarcodeScanner->useEffect upc:', upc);
+      navigation.navigate({
+        name: 'ManageExpense',
+        params: { data: upc },
+        merge: true
+      })
+    }
+  }, [scanned] )  
+*/
 
   // Check for camera permission and return
   if (cameraPermission === null) {
@@ -47,9 +64,9 @@ function BarcodeScanner() {
           onBarCodeScanned={scanned ? undefined : barCodeScannerHandler}
           style={{ height: 400, width: 400 }} />
       </View>
-      <Text style={styles.text}>{upc}</Text>
+      {/* <Text style={styles.text}>{upc}</Text> */}
 
-      {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
+      {/* {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />} */}
     </View>
   )
 }

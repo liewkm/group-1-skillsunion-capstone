@@ -1,7 +1,7 @@
 /*----  
   Expense input form 
 ----*/
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   Pressable,
   Platform,
   Alert,
+  ScrollView,
+  Modal,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
@@ -17,9 +19,18 @@ import { GlobalColors } from "../../utilities/colors";
 import { getFormattedDate } from "../../utilities/helpers.js";
 import Button from "../commonUI/Button.js";
 import Input from "./Input";
+import BarcodeScanner from "./BarcodeScanner";
 import IconButton from "../commonUI/IconButton";
-
-function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navigation }) {
+import { getUpcList } from "../../api/upc-api";
+/*
+const DUMMY_UPC_LIST=[
+  { upc: 8887319426163, category: 'Medical', description: 'Zyrtec-R tablets', price: '12.85' },
+  { upc: 9781607747307, category: 'Books', description: 'Marie Kondo: The Life-Changing Magic of Tidying Up', price: '19.99' },
+  { upc: 8887603535953, category: 'Medical', description: 'Guardian Vitamin C 1000mg 60 tablets', price: '5.95' },
+  { upc: 8887066000067, category: 'Stationery', description: 'SureMark reinforcement rings 6mm 500pcs', price: '2.50' },
+]
+*/
+function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [validAmount, setValidAmount] = useState(true);
   const [validDate, setValidDate] = useState(true);
   const [validDescp, setValidDescp] = useState(true);
@@ -38,6 +49,13 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
     category: defaultValues ? defaultValues.category : "",
     
   });
+  const [upcList, setUpcList] = useState([])
+
+  // State for BarcodeScanner
+  const [upc, setUpc] = useState(null)
+
+  // State for camera modal window 
+  const [isCameraVisible, setIsCameraVisible] = useState(false);
 
   const inputsChangeHandler = (inputType, enterValue) => {
     setInputs((current) => {
@@ -91,10 +109,45 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
     }
   };
 
+  const scanHandler = (upc) => {
+    console.log('scanHandler:', upc, typeof(upc));
+    setUpc(upc)
+    const index = upcList.findIndex((item) => item.upc === upc)
+    console.log(index);
+    setInputs({
+      date: getFormattedDate(date),
+      category: upcList[index].category,
+      description: upcList[index].description,
+      amount: upcList[index].price.toString()
+    })
+  }
+
+  // Setup UPC list on component mount
+
+  useEffect(() => {
+    async function doGetUpcList() {
+      try {
+        const data = await getUpcList()
+        console.log(data);
+        setUpcList(data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    doGetUpcList()
+  }, [])
+
+  // Update scanned UPC data from BarCodeScanner component
+  /*
+  useEffect(() => {
+    if (route.params?.data) {
+      console.log('UPC scanned:', route.params?.data);
+    }
+  }, [route.params?.data]);
+  */
   
-  // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>Expense</Text>
       <View style={styles.row}>
         <Pressable onPress={() => showMode()}>
@@ -141,6 +194,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
           style={styles.picker}
           dropdownIconColor={GlobalColors.primary100}
           onValueChange={(itemValue) => {
+            console.log('itemValue', itemValue)
             setInputs((current) => {
               return { ...current, ['category']: itemValue };
             });
@@ -148,13 +202,14 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
         >
           <Picker.Item label='Please select category:' enabled={false} />
           <Picker.Item label='Clothing' value='Clothing' />
-          <Picker.Item label='Computing Hardware' value='Computing Hardware' />
+          <Picker.Item label='IT Electronics' value='IT Electronics' />
           <Picker.Item label='Food' value='Food' />
-          <Picker.Item label='Hobby' value='Hobby' />
           <Picker.Item label='Household' value='Household' />
           <Picker.Item label='Stationery' value='Stationery' />
-          <Picker.Item label='Social' value='Social' />
+          <Picker.Item label='Entertainment' value='Entertainment' />
           <Picker.Item label='Transport' value='Transport' />
+          <Picker.Item label='Books' value='Books' />
+          <Picker.Item label='Medical' value='Medical' />
         </Picker>
       </View>
 
@@ -171,7 +226,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
         <Button style={styles.button} onPress={onCancel} mode='flat'>
           CANCEL
         </Button>
-        <IconButton style={styles.button} onPress={() => navigation.navigate('BarcodeScanner')}
+        <IconButton style={styles.button} onPress={() => setIsCameraVisible(true)}
           icon='camera'
           color={GlobalColors.primary50}
           size={38}
@@ -180,6 +235,26 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
           {submitBtnLabel}
         </Button>
       </View>
+      <Text style={styles.label}>UPC Scanned: {upc}</Text>
+
+      <Modal 
+        animationType='fade'
+        transparent={true}
+        visible={isCameraVisible}
+        onRequestClose={() => {
+          setIsCameraVisible(!isCameraVisible)
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View stle={styles.modalView}>
+            <BarcodeScanner 
+              scanHandler={scanHandler}
+              setIsCameraVisible={setIsCameraVisible}
+            />
+          </View>
+        </View>
+      </Modal>
+      
       {formNotValid && (
         <Text style={styles.errorOutput}>
           Invalid Entry, Please Check Entry Again!
@@ -188,11 +263,10 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
       {!validCategory && (
         <Text style={styles.errorOutput}>Please Choose a Category!</Text>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
-export default ExpensesForm;
 const styles = StyleSheet.create({
   container: { marginTop: 10 },
   row: {
@@ -244,5 +318,26 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     minWidth : "49%"
   },
-
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }, 
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
 });
+
+export default ExpensesForm;

@@ -18,7 +18,6 @@ import { GlobalColors } from './utilities/colors';
 import ExpensesContextProvider from './store/ExpensesContext';
 import ExpensesOverview from './screens/ExpensesOverview';
 import ManageExpense from './screens/ManageExpense';
-import BarcodeScanner from './screens/BarcodeScanner';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
@@ -43,13 +42,6 @@ export default function App() {
             <Stack.Screen
               name='ManageExpense'
               component={ManageExpense}
-              options={{
-                presentation: 'modal',
-              }}
-            />
-            <Stack.Screen
-              name='BarcodeScanner'
-              component={BarcodeScanner}
               options={{
                 presentation: 'modal',
               }}

@@ -11,9 +11,9 @@ const BACKEND_URL = 'https://rn-skillsunion-capstone-default-rtdb.asia-southeast
 //----
 
 export async function postExpense(expenseData) {
-  const response = await axios.post(BACKEND_URL + '/expenses.json', expenseData)
-  const id = response.data.name
-  return id 
+  const response = await axios.post(BACKEND_URL + '/expenses.json', expenseData);
+  const id = response.data.name;
+  return id;
 }
 
 //----
@@ -43,7 +43,7 @@ export async function getExpenses() {
 //----
 
 export function updateExpense(id, expenseData) {
-  return axios.put(BACKEND_URL + `/expenses/${id}.json`, expenseData)
+  return axios.put(BACKEND_URL + `/expenses/${id}.json`, expenseData);
 }
 
 //----
@@ -51,5 +51,5 @@ export function updateExpense(id, expenseData) {
 //----
 
 export function deleteExpense(id) {
-  return axios.delete(BACKEND_URL + `/expenses/${id}.json`)
+  return axios.delete(BACKEND_URL + `/expenses/${id}.json`);
 }

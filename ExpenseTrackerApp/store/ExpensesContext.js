@@ -3,7 +3,7 @@
 ----*/
 
 import { createContext, useReducer } from 'react';
-import ExpensesReducer from '../reducers/ExpensesReducer';
+import ExpensesReducer from './ExpensesReducer';
 
 // Create context objext
 
