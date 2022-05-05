@@ -125,6 +125,12 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       })
     } else {
       setIsUpcFound(false);
+      setInputs({
+        date: getFormattedDate(date),
+        category: '',
+        description: '',
+        amount: ''
+      })
     }
   }
 
