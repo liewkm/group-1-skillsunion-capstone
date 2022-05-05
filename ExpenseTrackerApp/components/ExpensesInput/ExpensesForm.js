@@ -9,7 +9,8 @@ import {
   Pressable,
   Platform,
   Alert,
-  ScrollView
+  ScrollView,
+  Modal,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
@@ -18,7 +19,8 @@ import { GlobalColors } from "../../utilities/colors";
 import { getFormattedDate } from "../../utilities/helpers.js";
 import Button from "../commonUI/Button.js";
 import Input from "./Input";
-import BarcodeScanner from "../../screens/BarcodeScanner";
+import BarcodeScanner from "./BarcodeScanner";
+import IconButton from "../commonUI/IconButton";
 import { getUpcList } from "../../api/upc-api";
 /*
 const DUMMY_UPC_LIST=[
@@ -28,7 +30,7 @@ const DUMMY_UPC_LIST=[
   { upc: 8887066000067, category: 'Stationery', description: 'SureMark reinforcement rings 6mm 500pcs', price: '2.50' },
 ]
 */
-function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navigation }) {
+function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [validAmount, setValidAmount] = useState(true);
   const [validDate, setValidDate] = useState(true);
   const [validDescp, setValidDescp] = useState(true);
@@ -49,8 +51,11 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
   });
   const [upcList, setUpcList] = useState([])
 
-  // Props for BarcodeScanner
+  // State for BarcodeScanner
   const [upc, setUpc] = useState(null)
+
+  // State for camera modal window 
+  const [isCameraVisible, setIsCameraVisible] = useState(false);
 
   const inputsChangeHandler = (inputType, enterValue) => {
     setInputs((current) => {
@@ -117,6 +122,8 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
     })
   }
 
+  // Setup UPC list on component mount
+
   useEffect(() => {
     async function doGetUpcList() {
       try {
@@ -130,7 +137,15 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
     doGetUpcList()
   }, [])
 
-  // console.log("submitBtnLabel: ", submitBtnLabel);
+  // Update scanned UPC data from BarCodeScanner component
+  /*
+  useEffect(() => {
+    if (route.params?.data) {
+      console.log('UPC scanned:', route.params?.data);
+    }
+  }, [route.params?.data]);
+  */
+  
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Expense</Text>
@@ -211,18 +226,34 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
         <Button style={styles.button} onPress={onCancel} mode='flat'>
           CANCEL
         </Button>
-        {/* <IconButton style={styles.button} onPress={() => navigation.navigate('BarcodeScanner')}
+        <IconButton style={styles.button} onPress={() => setIsCameraVisible(true)}
           icon='camera'
           color={GlobalColors.primary50}
           size={38}
-        /> */}
+        />
         <Button style={styles.button} onPress={submitHandler}>
           {submitBtnLabel}
         </Button>
       </View>
       <Text style={styles.label}>UPC Scanned: {upc}</Text>
 
-      <BarcodeScanner scanHandler={scanHandler}/>
+      <Modal 
+        animationType='fade'
+        transparent={true}
+        visible={isCameraVisible}
+        onRequestClose={() => {
+          setIsCameraVisible(!isCameraVisible)
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View stle={styles.modalView}>
+            <BarcodeScanner 
+              scanHandler={scanHandler}
+              setIsCameraVisible={setIsCameraVisible}
+            />
+          </View>
+        </View>
+      </Modal>
       
       {formNotValid && (
         <Text style={styles.errorOutput}>
@@ -236,7 +267,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navig
   );
 }
 
-export default ExpensesForm;
 const styles = StyleSheet.create({
   container: { marginTop: 10 },
   row: {
@@ -288,5 +318,26 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     minWidth : "49%"
   },
-
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }, 
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
 });
+
+export default ExpensesForm;
