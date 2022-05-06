@@ -235,13 +235,13 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         invalid={!validDescp}
       />
       <View style={styles.buttonRow}>
-        <Button style={styles.button} onPress={onCancel} mode='flat'>
+        <Button style={styles.button} onPress={onCancel}>
           CANCEL
         </Button>
-        <IconButton style={styles.button} onPress={() => setIsCameraVisible(true)}
-          icon='camera'
+        <IconButton onPress={() => setIsCameraVisible(true)} 
+          icon='barcode-outline'
           color={GlobalColors.primary50}
-          size={38}
+          size={35}
         />
         <Button style={styles.button} onPress={submitHandler}>
           {submitBtnLabel}
@@ -263,12 +263,12 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         }}
       >
         <View style={styles.centeredView}>
-          <View stle={styles.modalView}>
+          {/* <View stle={styles.modalView}> */}
             <BarcodeScanner 
               scanHandler={scanHandler}
               setIsCameraVisible={setIsCameraVisible}
             />
-          </View>
+          {/* </View> */}
         </View>
       </Modal>
       
@@ -348,19 +348,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   }, 
+  // modalView: {
+  //   margin: 20,
+  //   backgroundColor: 'cyan',
+  //   borderRadius: 20,
+  //   padding: 35,
+  //   alignItems: "center",
+  //   shadowColor: "#000",
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 2
+  //   },
+  //   shadowOpacity: 0.25,
+  //   shadowRadius: 4,
+  //   elevation: 5
+  // },
   modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
+    width: 350,
+    height: 400,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
     elevation: 5
   },
 });
