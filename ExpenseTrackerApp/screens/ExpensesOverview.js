@@ -7,8 +7,15 @@ import { GlobalColors } from "../utilities/colors";
 import IconButton from "../components/commonUI/IconButton";
 import AllExpenses from "./AllExpenses";
 import RecentExpenses from "./RecentExpenses";
+<<<<<<< Updated upstream
+=======
+import AllCategories from "./AllCategories";
+// import HomeScreen from "./HomeScreen";
+
+>>>>>>> Stashed changes
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Button from "../components/commonUI/Button";
 const BottomTabs = createBottomTabNavigator();
 
 function ExpensesOverview() {
@@ -19,6 +26,16 @@ function ExpensesOverview() {
         headerTintColor: GlobalColors.primary100 ,
         tabBarStyle: { backgroundColor: GlobalColors.primary700 },
         tabBarActiveTintColor: GlobalColors.accent500,
+        headerLeft: ({ tintColor }) => (
+          <IconButton
+            icon="home"
+            size={28}
+            color={tintColor}
+            onPress={() => {
+              navigation.navigate("ManageExpense");
+            }}
+          />
+        ),
         headerRight: ({ tintColor }) => (
           <IconButton
             icon="add"
@@ -31,6 +48,18 @@ function ExpensesOverview() {
         ),
       })}
     >
+       <BottomTabs.Screen
+        name="HomeScreen"
+        component={AllExpenses}
+        options={{
+          title: "Home Expenses",
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
+        }}
+      />
+
       <BottomTabs.Screen
         name="HomeScreen"
         component={HomeScreen}
