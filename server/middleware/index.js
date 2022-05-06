@@ -9,6 +9,12 @@ class Middleware {
       // console.log("==> decodeValue: ", decodeValue);
       // console.log("==> uID: ", decodeValue.uid);
 
+      // console.log(decodeValue);
+      console.log("req.user: ", decodeValue.name);
+      console.log("req.uid: ", decodeValue.uid);
+      console.log("req.uid: ", decodeValue.uid);
+      console.log("req.email: ", decodeValue.email);
+
       if (decodeValue) {
         req.user = decodeValue.name;
         req.uid = decodeValue.uid;
@@ -16,10 +22,11 @@ class Middleware {
         return next();
       }
 
+
       return res.status(500).json({ message: "Unauthorise" });
     } catch (error) {
-      console.log("Middleware error: ", error);
-      return res.status(500).json({ message: "Internal Error" });
+      // console.log("Middleware error: ", error);
+      return res.status(500).json({ message: error.message });
     }
   }
 }
