@@ -4,7 +4,7 @@
 
 import axios from 'axios';
 
-const BACKEND_URL = 'https://rn-skillsunion-capstone-default-rtdb.asia-southeast1.firebasedatabase.app';
+const BACKEND_URL = 'https://expensereactnative-b8ec4-default-rtdb.asia-southeast1.firebasedatabase.app';
 
 //----
 // HTTP POST method to add new expenses
