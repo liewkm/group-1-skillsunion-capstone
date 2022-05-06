@@ -6,7 +6,7 @@ module.exports = function (sequelize) {
   User.init(
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
         unique: true,
       },
@@ -42,7 +42,7 @@ module.exports = function (sequelize) {
     {
       sequelize,
       modelName: "User",
-      tableName: "users",
+      tableName: "User",
     }
   );
 

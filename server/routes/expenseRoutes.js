@@ -14,7 +14,7 @@ const userController = new UserController();
 //
 // route description: get all expenses per uid
 router // header decodeToken: uid
-  .route("/getAll")
+  .route("/get")
   .get((req, res) => res.send("You have called the FETCH EXPENSES route!"))
   .get(userController.findOrCreateUser, expenseController.getExpenses);
 // .get(userController.findOrCreateUser);

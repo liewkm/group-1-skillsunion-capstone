@@ -12,6 +12,7 @@ class Middleware {
       if (decodeValue) {
         req.user = decodeValue.name;
         req.userId = decodeValue.uid;
+        req.userEmail = decodeValue.email;
         return next();
       }
 

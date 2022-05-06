@@ -42,6 +42,7 @@ function App() {
       .auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then((userCred) => {
+        console.log(userCred);
         if (userCred) {
           setAuth(true);
           window.localStorage.setItem("auth", "true");

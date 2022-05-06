@@ -9,6 +9,7 @@ module.exports = function (sequelize) {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false,
       },
 
       userId: {

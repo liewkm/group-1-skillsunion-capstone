@@ -7,8 +7,8 @@ const userService = require("../services/userService");
 class UserController {
   async findOrCreateUser(req, res, next) {
     const uid = req.uid;
-    const userName = req.userName;
-    const emailAddress = req.emailAddress;
+    const userName = req.user;
+    const emailAddress = req.email;
 
     if (uid && emailAddress) {
       // use the service layer

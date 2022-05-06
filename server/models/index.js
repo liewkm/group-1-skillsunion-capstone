@@ -52,6 +52,7 @@ User.hasMany(Expense, {
 Expense.belongsTo(User, {
   onDelete: "CASCADE",
 });
+
 Expense.belongsToMany(Category, {
   through: "ExpenseCategory",
   foreignKey: "expenseId",
