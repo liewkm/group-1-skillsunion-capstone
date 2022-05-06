@@ -2,7 +2,13 @@
 
 
 # config files
+.env
+.env.test
+serviceAccKey.json
+serviceAccKeyORG.json
+firebase-config.js
 firebase-configORG.js
+
 
 # dependencies
 /node_modules

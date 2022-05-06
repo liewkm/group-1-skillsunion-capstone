@@ -72,6 +72,8 @@ typings/
 .env
 .env.test
 serviceAccKey.json
+serviceAccKeyORG.json
+firebase-config.js
 firebase-configORG.js
 
 # parcel-bundler cache (https://parceljs.org/)

@@ -1,10 +1,5 @@
 // Import sequelize
 const { Sequelize } = require("sequelize");
-// Import model(s)
-const User = require("./user.model")(sequelize);
-const Expense = require("./expense.model")(sequelize);
-const Category = require("./category.model")(sequelize);
-const ExpenseCategory = require("./expense_category.model")(sequelize);
 
 // const sequelize = new Sequelize("sqlite::memory:");
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
@@ -16,6 +11,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   },
 });
 
+// init sequelize
 sequelize
   .authenticate()
   .then(() => {
@@ -24,6 +20,7 @@ sequelize
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
   });
+
 
 // Test connection function
 async function testConnection() {
@@ -36,6 +33,16 @@ async function testConnection() {
     return false;
   }
 }
+
+
+
+// Import model(s)
+const User = require("./user.model")(sequelize);
+const Expense = require("./expense.model")(sequelize);
+const Category = require("./category.model")(sequelize);
+const ExpenseCategory = require("./expense_category.model")(sequelize);
+
+
 
 // Create associations
 User.hasMany(Expense, {

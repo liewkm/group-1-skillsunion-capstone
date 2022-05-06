@@ -16,25 +16,7 @@ Category.sync({ alter: true }).then(() => {
   //   },
   //   {
   //     type: "Computing Hardware",
-  //   },
-  //   {
-  //     type: "Food",
-  //   },
-  //   {
-  //     type: "Hobby",
-  //   },
-  //   {
-  //     type: "Household",
-  //   },
-  //   {
-  //     type: "Stationary",
-  //   },
-  //   {
-  //     type: "Social",
-  //   },
-  //   {
-  //     type: "Transport",
-  //   },
+  //   }
   // ]);
 });
 

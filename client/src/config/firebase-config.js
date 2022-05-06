@@ -1,14 +1,14 @@
 // adding your firebase config here
 import firebase from "firebase/app";
 
-// Your web app's Firebase configuration, mock data below
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDv03QF7KS3wAcZCgs",
-  authDomain: "auth-express-8a606.firebaseapp.com",
-  projectId: "auth-express-8a606",
-  storageBucket: "auth-express-8a606.appspot.com",
-  messagingSenderId: "647007",
-  appId: "1:647007:web:41bfa42646",
+  apiKey: "AIzaSyAnOpkk5VB3fM1supYpJjzAvcLkJ0QQ66k",
+  authDomain: "expensereactnative-b8ec4.firebaseapp.com",
+  projectId: "expensereactnative-b8ec4",
+  storageBucket: "expensereactnative-b8ec4.appspot.com",
+  messagingSenderId: "707368538811",
+  appId: "1:707368538811:web:0b30b15f312086d1f90f9e"
 };
 
 // Initialize Firebase

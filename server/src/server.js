@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 app.get("/api/expense", (req, res) => {
   console.log("==> req.user: ", req.user);
   console.log("==> req.userId: ", req.userId);
+  console.log("==> req: ", req.email);
 
   return res.json({
     expense: [

@@ -8,7 +8,6 @@ export default function ExpenseList({ token }) {
   useEffect(() => {
     if (token) {
       fetchData(token);
-	  
     }
   }, [token]);
 
@@ -19,11 +18,12 @@ export default function ExpenseList({ token }) {
       },
     });
     setDetails(res.data);
-    console.log("res.data: ", res.data);
-    // console.log("res.data: ", token);
+
   };
 
+  console.log("res details: ", details);
   
+  console.log("token: ", token);
 
   return (
     <div>
