@@ -3,7 +3,6 @@ import { Text, View, StyleSheet } from 'react-native';
 import TextBox from '../components/LoginSignup/TextBox';
 import Btn from '../components/LoginSignup/Btn';
 import firebase from 'firebase/compat/app';
-// import 'firebase/compat/auth';
 
 const styles = StyleSheet.create({
   view: {

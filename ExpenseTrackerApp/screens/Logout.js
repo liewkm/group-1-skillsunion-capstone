@@ -1,7 +1,5 @@
-// components/dashboard.js
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
-// import 'firebase/compat/auth';
 import firebase from 'firebase/compat/app';
 
 export default class Logout extends Component {
