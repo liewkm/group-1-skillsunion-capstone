@@ -4,8 +4,7 @@
 
 import axios from 'axios'
 
-const BACKEND_URL = 'https://udemy-expenses-default-rtdb.asia-southeast1.firebasedatabase.app'
-
+const BACKEND_URL = https://expensereactnative-b8ec4-default-rtdb.asia-southeast1.firebasedatabase.app
 
 //----
 // HTTP GET method to fetch all expenses
