@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import TextBox from '../components/LoginSignup/TextBox';
-import Btn from '../components/LoginSignup/Btn';
 import firebase from 'firebase/compat/app';
 
-const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+// Login Screen UI changes
+import Button from '../components/commonUI/Button';
+import Input from '../components/commonUI/Input';
+import { GlobalColors } from '../utilities/colors';
 
 export default function Signup({ navigation }) {
   const [values, setValues] = useState({
@@ -47,43 +41,67 @@ export default function Signup({ navigation }) {
   }
 
   return (
-    <View style={styles.view}>
-      <Text style={{ fontSize: 34, fontWeight: '800', marginBottom: 20 }}>
-        Sign Up
-      </Text>
-      <TextBox
-        placeholder='Email Address'
-        onChangeText={(text) => handleChange(text, 'email')}
-      />
-      <TextBox
-        placeholder='Password'
-        secureTextEntry={true}
-        onChangeText={(text) => handleChange(text, 'pwd')}
-      />
-      <TextBox
-        placeholder='Confirm Password'
-        secureTextEntry={true}
-        onChangeText={(text) => handleChange(text, 'pwd2')}
-      />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '92%',
-        }}
-      >
-        <Btn
-          onClick={() => SignUp()}
-          title='Sign Up'
-          style={{ width: '48%' }}
+    <View style={styles.container}>
+      <View>
+        <Text style={styles.title}>Sign Up</Text>
+        <Input 
+          inputLabel='Email Address'
+          inputConfig={{
+            onChangeText: (text) => handleChange(text, 'email')
+          }}
         />
-        <Btn
-          onClick={() => navigation.replace('Login')}
-          title='Login'
-          style={{ width: '48%', backgroundColor: '#344869' }}
+        <Input
+          inputLabel='Password'
+          inputConfig={{
+            onChangeText: (text) => handleChange(text, 'pwd'),
+            secureTextEntry: true
+          }}
         />
+        <Input
+          inputLabel='Confirm Password'
+          inputConfig={{
+            onChangeText: (text) => handleChange(text, 'pwd2'),
+            secureTextEntry: true
+          }}
+        />
+        <View style={styles.buttonRow}>
+          <Button style={styles.button} onPress={() => navigation.replace('Login')} mode='flat'>
+            Login
+          </Button>
+          <Button style={styles.button} onPress={SignUp}>
+            Sign Up
+          </Button>
+        </View>      
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: GlobalColors.primary800,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: GlobalColors.primary50,
+    paddingVertical: 20,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  button: {
+    minWidth: 100,
+    marginHorizontal: 16,
+    marginVertical: 8,
+  },
+});
+

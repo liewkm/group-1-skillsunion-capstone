@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import TextBox from '../components/LoginSignup/TextBox';
-import Btn from '../components/LoginSignup/Btn';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import firebase from 'firebase/compat/app';
 
-const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+// Login Screen UI changes
+import Button from '../components/commonUI/Button';
+import Input from '../components/commonUI/Input';
+import { GlobalColors } from '../utilities/colors';
 
 export default function Login({ navigation }) {
   const [values, setValues] = useState({
@@ -30,7 +24,6 @@ export default function Login({ navigation }) {
 
   function Login() {
     const { email, pwd } = values;
-
     firebase
       .auth()
       .signInWithEmailAndPassword(email, pwd)
@@ -42,34 +35,59 @@ export default function Login({ navigation }) {
   }
 
   return (
-    <View style={styles.view}>
-      <Text style={{ fontSize: 34, fontWeight: '800', marginBottom: 20 }}>
-        Login
-      </Text>
-      <TextBox
-        placeholder='Email Address'
-        onChangeText={(text) => handleChange(text, 'email')}
-      />
-      <TextBox
-        placeholder='Password'
-        onChangeText={(text) => handleChange(text, 'pwd')}
-        secureTextEntry={true}
-      />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '92%',
-        }}
-      >
-        <Btn onClick={() => Login()} title='Login' style={{ width: '48%' }} />
-        <Btn
-          onClick={() => navigation.navigate('Sign Up')}
-          title='Sign Up'
-          style={{ width: '48%', backgroundColor: '#344869' }}
+    <View style={styles.container}>
+      <View>
+        <Text style={styles.title}>Login</Text>
+        <Input
+          inputLabel='Email Address'
+          inputConfig={{
+            onChangeText: (text) => handleChange(text, 'email')
+          }}
         />
+        <Input
+          inputLabel='Password'
+          inputConfig={{
+            onChangeText: (text) => handleChange(text, 'pwd'),
+            secureTextEntry: true
+          }}
+        />
+        <View style={styles.buttonRow}>
+          <Button style={styles.button} onPress={Login}>
+            Login
+          </Button>
+          <Button style={styles.button} onPress={() => navigation.navigate('Sign Up')} mode='flat'>
+            Sign Up
+          </Button>
+        </View>
       </View>
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: GlobalColors.primary800,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: GlobalColors.primary50,
+    paddingVertical: 20,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  button: {
+    minWidth: 100,
+    marginHorizontal: 16,
+    marginVertical: 8,
+  },
+});
+

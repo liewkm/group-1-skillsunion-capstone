@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import firebase from 'firebase/compat/app';
+
+import { GlobalColors } from '../utilities/colors';
+import Button from '../components/commonUI/Button';
 
 export default class Logout extends Component {
   constructor() {
@@ -24,12 +27,13 @@ export default class Logout extends Component {
     };
     return (
       <View style={styles.container}>
-        <Text style={styles.textStyle}>
-          Hi, are you signing out of the page?
+        <Text style={styles.title}>
+          Confirm Logout?
         </Text>
-        <Text>{this.state.displayName}</Text>
-
-        <Button color='#3740FE' title='Logout' onPress={() => this.signOut()} />
+        <Text style={styles.text}>{this.state.displayName}</Text>
+        <Button style={styles.button} onPress={() => this.signOut()}>
+          Logout
+        </Button>
       </View>
     );
   }
@@ -37,14 +41,34 @@ export default class Logout extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: 'flex',
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 35,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColors.primary800,
   },
-  textStyle: {
-    fontSize: 15,
-    marginBottom: 20,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: GlobalColors.primary50,
+    paddingVertical: 20,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  button: {
+    minWidth: 100,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    paddingVertical: 20,
+  },
+  text: {
+    fontSize: 16,
+    marginVertical: 8,
+    textAlign: 'center',
+    color: GlobalColors.primary100,
   },
 });
