@@ -3,7 +3,6 @@
 // import service
 const expenseService = require("../services/expenseService");
 
-// establish the RecipeController first, then recipeService
 class ExpenseController {
   async getExpenses(req, res) {
     const uid = req.uid;
@@ -18,13 +17,11 @@ class ExpenseController {
         .status(result.status)
         .json({ message: result.message, data: result.data });
     } catch (error) {
-      if (error.name === "ValidationError") {
+      if (error.name === "SequelizeValidationError") {
         const messages = Object.values(error.errors).map((val) => val.message);
         return res.status(400).json({ sucess: false, error: messages });
       } else {
-        return res
-          .status(500)
-          .json({ sucess: false, error: "Internal server error!" });
+        return res.status(500).json({ sucess: false, error: error });
       }
     }
   }
@@ -44,7 +41,7 @@ class ExpenseController {
           categoryType
         );
 
-        console.log("controller addExpense Result: ", result);
+        // console.log("controller addExpense Result: ", result);
 
         return res
           .status(result.status)
@@ -53,13 +50,16 @@ class ExpenseController {
         return res.status(400).json({ message: `uid invalid` });
       }
     } catch (error) {
-      if (error.name === "ValidationError") {
+      if (error.name === "SequelizeValidationError") {
         const messages = Object.values(error.errors).map((val) => val.message);
         return res.status(400).json({ sucess: false, error: messages });
       } else {
-        return res
-          .status(500)
-          .json({ sucess: false, error: "Internal server error!" });
+        return (
+          res
+            .status(500)
+            // .json({ sucess: false, error: "Internal server error!" });
+            .json({ sucess: false, error: error })
+        );
       }
     }
   }
@@ -90,13 +90,11 @@ class ExpenseController {
         return res.status(400).json({ message: `uid or expenseId invalid` });
       }
     } catch (error) {
-      if (error.name === "ValidationError") {
+      if (error.name === "SequelizeValidationError") {
         const messages = Object.values(error.errors).map((val) => val.message);
         return res.status(400).json({ sucess: false, error: messages });
       } else {
-        return res
-          .status(500)
-          .json({ sucess: false, error: "Internal server error!" });
+        return res.status(500).json({ sucess: false, error: error });
       }
     }
   }
@@ -117,7 +115,7 @@ class ExpenseController {
         return res.status(404).json({ message: `uid or expenseId invalid` });
       }
     } catch (error) {
-      if (error.name === "ValidationError") {
+      if (error.name === "SequelizeValidationError") {
         const messages = Object.values(error.errors).map((val) => val.message);
         return res.status(400).json({ sucess: false, error: messages });
       } else {

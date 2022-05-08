@@ -1,25 +1,6 @@
 // execute to DB model
 const { User, Expense, ExpenseCategory, Category } = require("../models");
 
-User.sync({ alter: true }).then(() => console.log("User Database is ready"));
-Expense.sync({ alter: true }).then(() =>
-  console.log("Expense Database is ready")
-);
-ExpenseCategory.sync({ alter: true }).then(() =>
-  console.log("ExpenseCategory Database is ready")
-);
-Category.sync({ alter: true }).then(() => {
-  console.log("Category Database is ready");
-  // Category.bulkCreate([
-  //   {
-  //     type: "Clothing",
-  //   },
-  //   {
-  //     type: "Computing Hardware",
-  //   }
-  // ]);
-});
-
 module.exports = {
   getExpenses: async (uid) => {
     let result = {
@@ -28,17 +9,19 @@ module.exports = {
       data: null,
     };
 
-    const allExpenses = await Expense.findAll(
-      { where: { userId: uid } },
-      { include: Category }
-    );
+    const allExpenses = await Expense.findAll({
+      where: { userId: uid },
+      include: Category,
+    });
 
-    if (allExpenses) {
+    console.log("findAll, allExpenses", JSON.stringify(allExpenses));
+
+    if (allExpenses.length !== 0) {
       result.message = `All Expenses from ${uid} fetched successfully from DB`;
       result.status = 200;
       result.data = allExpenses;
 
-      console.log(`All Expenses from ${uid} fetched: `, JSON.stringify(result));
+      // console.log(`All Expenses from ${uid} fetched: `, JSON.stringify(result.data));
     } else {
       result.message = `Expenses from ${uid} not found!`;
       result.status = 404;
@@ -64,25 +47,28 @@ module.exports = {
       where: { id: uid },
     });
 
-    const [newExpense, created] = await Expense.findOrCreate({
-      where: {
-        // userId: user.id,
-        expenseDate: expenseDate,
-        expenseAmount: expenseAmount,
-        description: description,
-      },
-    });
-
-    const category = await Category.findOrCreate({
+    const [category, createdCat] = await Category.findOrCreate({
       where: {
         type: categoryType,
       },
     });
 
+    const [newExpense, created] = await Expense.findOrCreate({
+      where: {
+        userId: user.id,
+        expenseDate: expenseDate,
+        expenseAmount: expenseAmount,
+        description: description,
+      },
+      include: [{ model: Category, where: { type: category.type } }],
+    });
+
+    // console.log("newExpense, created: \n", created, newExpense);
+
     if (created) {
       // association
       await user.addExpense(newExpense);
-      await category.addExpense(newExpense);
+      await newExpense.addCategory(category);
 
       await newExpense.save();
       await category.save();
@@ -95,9 +81,6 @@ module.exports = {
     }
 
     result.data = newExpense;
-
-    console.log("Expense Result: ", JSON.stringify(result));
-    console.log(Expense, ExpenseCategory);
 
     return result;
   },
@@ -116,10 +99,24 @@ module.exports = {
       data: null,
     };
 
-    const updateExpense = await Expense.findOne(
-      { where: { id: expenseId, userId: uid } },
-      { include: Category }
+    console.log(
+      "editExpense INPUTS:   \n",
+      uid,
+      expenseId,
+      expenseDate,
+      expenseAmount,
+      description,
+      categoryType
     );
+
+    const updateExpense = await Expense.findOne({
+      where: { id: expenseId },
+      include: Category,
+    });
+
+
+    console.log("updateExpense", updateExpense);
+
 
     updateExpense.set({
       expenseDate: expenseDate,
@@ -128,6 +125,7 @@ module.exports = {
     });
 
     updateExpense.setCategory({ type: categoryType });
+
 
     updateExpense = await updateExpense.save();
     updateExpense.Category = await updateExpense.Category.save();

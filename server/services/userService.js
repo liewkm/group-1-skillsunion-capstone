@@ -12,8 +12,6 @@ module.exports = {
       data: null,
     };
 
-    console.log("User details input: ", uid, userName, emailAddress); // log input
-
     const [user, created] = await User.findOrCreate({
       where: { id: uid, userName: userName, emailAddress: emailAddress },
     });
@@ -27,9 +25,9 @@ module.exports = {
       result.message = `User ${user.id} FOUND in USER table`;
     }
 
-    console.log(
-      `User details: ${JSON.stringify(user)} \nUser created new: ${created})`
-    );
+    // console.log(
+    //   `User details: ${JSON.stringify(user)} \nUser created new: ${created})`
+    // );
 
     result.data = user;
     return result;

@@ -14,7 +14,7 @@
     "fs": "^0.0.1-security",
     "nodemon": "^2.0.15",
     "pg": "^8.7.3",
-    "sequelize": "^6.17.0"
+    "sequelize": "^6.19.0"
   },
   "scripts": {
     "dev": "nodemon index.js",

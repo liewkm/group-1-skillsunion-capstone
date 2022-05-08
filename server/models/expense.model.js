@@ -14,19 +14,18 @@ module.exports = function (sequelize) {
 
       userId: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+        // allowNull: false,
         field: "userId",
       },
 
       expenseDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: false,
         field: "expenseDate",
       },
 
       expenseAmount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         field: "expenseAmount",
       },

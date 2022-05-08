@@ -18,8 +18,6 @@ class UserController {
         emailAddress
       );
 
-      console.log("register controller result: ", result);
-
       next();
       // return res.json({
       //   status: result.status,

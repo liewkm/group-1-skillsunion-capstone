@@ -12,7 +12,6 @@ class Middleware {
       // console.log(decodeValue);
       console.log("req.user: ", decodeValue.name);
       console.log("req.uid: ", decodeValue.uid);
-      console.log("req.uid: ", decodeValue.uid);
       console.log("req.email: ", decodeValue.email);
 
       if (decodeValue) {

@@ -1932,10 +1932,10 @@
   "resolved" "https://registry.npmjs.org/sequelize-pool/-/sequelize-pool-7.1.0.tgz"
   "version" "7.1.0"
 
-"sequelize@^6.17.0":
-  "integrity" "sha512-AZus+0YZDq91Zg0hzDaO5atTzHgJruI23V8nBlAhkLuI81Z53nSRdAe/4R1A6vGOZ/RfCLP9idF4tfQnoAsM5A=="
-  "resolved" "https://registry.npmjs.org/sequelize/-/sequelize-6.17.0.tgz"
-  "version" "6.17.0"
+"sequelize@^6.19.0":
+  "integrity" "sha512-B3oGIdpYBERDjRDm74h7Ky67f6ZLcmBXOA7HscYObiOSo4pD7VBc9mtm44wNV7unc0uk8I1d30nbZBTQCE377A=="
+  "resolved" "https://registry.npmjs.org/sequelize/-/sequelize-6.19.0.tgz"
+  "version" "6.19.0"
   dependencies:
     "@types/debug" "^4.1.7"
     "@types/validator" "^13.7.1"
