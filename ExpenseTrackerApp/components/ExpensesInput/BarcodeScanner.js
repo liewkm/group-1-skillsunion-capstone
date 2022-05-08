@@ -62,7 +62,8 @@ function BarcodeScanner({scanHandler, setIsCameraVisible}) {
       <View style={styles.barcodeBox}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : barCodeScannerHandler}
-          style={{ height: 400, width: 400 }} />
+          style={ {width: 450, height: 450} } 
+        />
       </View>
       {/* <Text style={styles.text}>{upc}</Text> */}
 
@@ -73,7 +74,6 @@ function BarcodeScanner({scanHandler, setIsCameraVisible}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -82,13 +82,11 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   barcodeBox: {
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 300,
-    width: 300,
-    overflow: 'hidden',
-    borderRadius: 30,
-    backgroundColor: 'tomato'
+    backgroundColor: 'white',
   }
 });
 

@@ -125,8 +125,8 @@ function ManageExpense({ route, navigation }) {
         <View style={styles.deleteContainer}>
           <IconButton
             icon="trash"
-            color={GlobalColors.primary50}
-            size={38}
+            color={GlobalColors.error50}
+            size={30}
             onPress={deleteExpenseHandler}
           />
         </View>
@@ -143,9 +143,9 @@ const styles = StyleSheet.create({
   },
   deleteContainer: {
     alignItems: "center",
-    marginVertical: 16,
+    marginTop: 8,
     paddingTop: 8,
-    borderTopWidth: 2,
+    borderTopWidth: 0.5,
     borderTopColor: GlobalColors.primary50,
   },
 });
