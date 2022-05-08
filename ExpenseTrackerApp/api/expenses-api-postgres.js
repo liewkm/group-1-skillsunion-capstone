@@ -1,17 +1,18 @@
 /*----  
   API controller methods
+  
 ----*/
 
 import axios from 'axios';
 
-const BACKEND_URL = 'https://expensereactnative-b8ec4-default-rtdb.asia-southeast1.firebasedatabase.app';
+const BACKEND_URL = 'postgress....'
 
 //----
 // HTTP POST method to add new expenses
 //----
 
 export async function postExpense(expenseData) {
-  const response = await axios.post(BACKEND_URL + '/expenses.json', expenseData);
+  const response = await axios.post(BACKEND_URL + '/api/expenses/add', expenseData);
   const id = response.data.name;
   return id;
 }
@@ -21,7 +22,7 @@ export async function postExpense(expenseData) {
 //----
 
 export async function getExpenses() {
-  const response = await axios.get(BACKEND_URL + '/expenses.json')
+  const response = await axios.get(BACKEND_URL + '/api/expenses/get-all')
   const expenses = [];
   
   console.log('getExpenses->response.data', response.data);
@@ -43,7 +44,7 @@ export async function getExpenses() {
 //----
 
 export function updateExpense(id, expenseData) {
-  return axios.put(BACKEND_URL + `/expenses/${id}.json`, expenseData);
+  return axios.put(BACKEND_URL + `/api/expenses/${id}/edit`, expenseData);
 }
 
 //----
@@ -51,5 +52,5 @@ export function updateExpense(id, expenseData) {
 //----
 
 export function deleteExpense(id) {
-  return axios.delete(BACKEND_URL + `/expenses/${id}.json`);
+  return axios.delete(BACKEND_URL + `/api/expenses/${id}/delete`);
 }
