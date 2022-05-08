@@ -69,7 +69,6 @@ module.exports = {
       // association
       await user.addExpense(newExpense);
       await newExpense.addCategory(category);
-
       await newExpense.save();
       await category.save();
 
@@ -99,43 +98,31 @@ module.exports = {
       data: null,
     };
 
-    console.log(
-      "editExpense INPUTS:   \n",
-      uid,
-      expenseId,
-      expenseDate,
-      expenseAmount,
-      description,
-      categoryType
-    );
+    // console.log("Present updateExpense: \n ", updateExpense);
+    const [category, createdCat] = await Category.findOrCreate({
+      where: {
+        type: categoryType,
+      },
+    });
 
     const updateExpense = await Expense.findOne({
       where: { id: expenseId },
       include: Category,
     });
 
-
-    console.log("updateExpense", updateExpense);
-
-
-    updateExpense.set({
-      expenseDate: expenseDate,
-      expenseAmount: expenseAmount,
-      description: description,
-    });
-
-    updateExpense.setCategory({ type: categoryType });
-
-
-    updateExpense = await updateExpense.save();
-    updateExpense.Category = await updateExpense.Category.save();
-
-    if (updateExpense) {
+    if (updateExpense && category) {
+      updateExpense.setCategories(category);
+      updateExpense.update({
+        expenseDate: expenseDate,
+        expenseAmount: expenseAmount,
+        description: description,
+      });
+      await updateExpense.save();
       result.message = `Expense ${expenseId} updated in DB`;
       result.status = 200;
       result.data = updateExpense;
 
-      console.log(`Expense ID ${expenseId} updated: `, JSON.stringify(result));
+      // console.log(`Expense ID ${expenseId} updated: `, JSON.stringify(result));
     } else {
       result.message = `Expense ID ${expenseId} not found!`;
       result.status = 404;
@@ -150,13 +137,11 @@ module.exports = {
       status: null,
     };
 
-    await Expense.destroy(
-      { where: { id: expenseId, userId: uid } }
-      // { include: Category }
-    ).then((uid, expenseId, result) => {
+    if ((uid, expenseId)) {
+      await Expense.destroy({ where: { id: expenseId, userId: uid } });
       result.message = `Expense ${expenseId} from ${uid} is deleted!`;
       result.status = 200;
-    });
+    }
 
     return result;
   },

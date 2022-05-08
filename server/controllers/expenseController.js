@@ -107,9 +107,6 @@ class ExpenseController {
       if (uid && expenseId) {
         // use the service layer
         const result = await expenseService.deleteExpense(uid, expenseId);
-
-        console.log("controller deleteExpense Result: ", result);
-
         return res.status(result.status).json({ message: result.message });
       } else {
         return res.status(404).json({ message: `uid or expenseId invalid` });
