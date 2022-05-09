@@ -26,7 +26,7 @@ function ExpensesOverview() {
             size={28}
             color={tintColor}
             onPress={() => {
-              navigation.navigate("HandleSignOut");
+              navigation.navigate("Logout");
             }}
           />
         ),

@@ -10,7 +10,7 @@
     CP
 ----*/
 
-
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -22,31 +22,74 @@ import ManageExpense from './screens/ManageExpense';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
+// Login and SignUp with Firebase authentication
+import Login from './screens/Login';
+import Logout from './screens/Logout';
+import Signup from './screens/Signup';
+
+import firebase from 'firebase/compat';
+import { firebaseConfig } from './firebase-config';
+
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  } else {
+    firebase.app();
+  }
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user != null) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false);
+    }
+  });
+  
   return (
     <>
       <StatusBar style='light' />
       <ExpensesContextProvider>
         <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerStyle: { backgroundColor: GlobalColors.primary500 },
-              headerTintColor: 'white',
-            }}
-          >
-            <Stack.Screen
-              name='ExpensesOverview'
-              component={ExpensesOverview}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name='ManageExpense'
-              component={ManageExpense}
-              options={{
-                presentation: 'modal',
+          { isLoggedIn 
+          ? <Stack.Navigator
+              screenOptions={{
+                headerStyle: { backgroundColor: GlobalColors.primary500 },
+                headerTintColor: 'white',
               }}
-            />
-          </Stack.Navigator>
+            >
+              {/* Main expenses overview screen */}
+              <Stack.Screen
+                name='ExpensesOverview'
+                component={ExpensesOverview}
+                options={{ headerShown: false }}
+              />
+              {/* Input form screen */}
+              <Stack.Screen
+                name='ManageExpense'
+                component={ManageExpense}
+                options={{ presentation: 'modal' }}
+              />
+              {/* Signout --> logout screen */}
+              <Stack.Screen
+                name='Logout'
+                component={Logout}
+                options={{ presentation: 'modal' }}
+              />
+            </Stack.Navigator>
+          : <Stack.Navigator>
+              <Stack.Screen 
+                name="Login" 
+                component={Login} 
+                options={{ headerShown: false }} 
+              />
+              <Stack.Screen 
+                name="Sign Up" 
+                component={Signup} 
+                options={{ headerShown: false }} 
+              />
+            </Stack.Navigator>
+          }
         </NavigationContainer>
       </ExpensesContextProvider>
     </>

@@ -341,7 +341,8 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     margin: 8,
     overflow: 'hidden',
-    minWidth : "49%"
+    minWidth : "49%",
+    backgroundColor: GlobalColors.primary50,
   },
   centeredView: {
     flex: 1,
