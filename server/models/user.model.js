@@ -10,13 +10,11 @@ module.exports = function (sequelize) {
         primaryKey: true,
         unique: true,
       },
-
       userName: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         field: "userName",
       },
-
       emailAddress: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -28,12 +26,10 @@ module.exports = function (sequelize) {
         },
         field: "emailAddress",
       },
-
       createdAt: {
         type: DataTypes.DATE,
         field: "created_at",
       },
-
       updatedAt: {
         type: DataTypes.DATE,
         field: "updated_at",
@@ -45,6 +41,5 @@ module.exports = function (sequelize) {
       tableName: "User",
     }
   );
-
   return User;
 };

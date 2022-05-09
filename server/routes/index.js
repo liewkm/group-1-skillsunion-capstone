@@ -16,6 +16,7 @@ app.use(
   })
 );
 
+// middleware for Firebase header auth decodeToken
 app.use(middleware.decodeToken);
 app.use("/api/expense", expenseRoutes);
 
