@@ -69,12 +69,19 @@ function ManageExpense({ route, navigation }) {
             data: expenseData,
           },
         })
+        navigation.goBack();
         await updateExpense(editedExpenseId, expenseData, token)
       } else {
         const id = await postExpense(expenseData, token)
-        dispatch({ type: ADD_EXPENSE, payload: {...expenseData, id: id} });
+        dispatch({ 
+          type: ADD_EXPENSE, 
+          payload: {
+            ...expenseData, 
+            id: id} 
+        });
+        navigation.goBack();
       }
-      navigation.goBack();
+      // navigation.goBack();
     } catch (error) {
       setError(`Could not ${isEditing ? 'update' : 'add'} expense`)
       setIsSaving(false)
