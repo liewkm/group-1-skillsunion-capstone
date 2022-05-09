@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { useState, useEffect } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner'
+import Button from '../commonUI/Button'
 
 function BarcodeScanner({scanHandler, setIsCameraVisible}) {
   
@@ -62,7 +63,11 @@ function BarcodeScanner({scanHandler, setIsCameraVisible}) {
       <View style={styles.barcodeBox}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : barCodeScannerHandler}
-          style={{ height: 400, width: 400 }} />
+          style={ {width: 450, height: 450} } 
+        />
+        <Button style={styles.button} onPress={() => setIsCameraVisible(false)}>
+          CLOSE
+        </Button>
       </View>
       {/* <Text style={styles.text}>{upc}</Text> */}
 
@@ -73,7 +78,6 @@ function BarcodeScanner({scanHandler, setIsCameraVisible}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -82,14 +86,17 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   barcodeBox: {
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 300,
-    width: 300,
-    overflow: 'hidden',
-    borderRadius: 30,
-    backgroundColor: 'tomato'
-  }
+    backgroundColor: 'white',
+  },
+  button: {
+    minWidth: 100,
+    marginHorizontal: 16,
+    marginVertical: 20,
+  },
 });
 
 export default BarcodeScanner
