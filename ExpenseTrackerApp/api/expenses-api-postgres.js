@@ -1,15 +1,14 @@
-/*----  
+/*-----------------------------------------------------------------------------
   API controller methods
-  
-----*/
+*/
 
 import axios from 'axios';
 
-const BACKEND_URL = 'postgress....'
+const BACKEND_URL = 'postgres://kbvhaywagrypyq:04ac20b125a7a0be031f4c99e296b371d31705f0ae07abd02bf23fabda3bf1cc@ec2-44-194-92-192.compute-1.amazonaws.com:5432/dbluvk65ld9kle'
 
-//----
-// HTTP POST method to add new expenses
-//----
+/*-----------------------------------------------------------------------------
+  HTTP POST method to add new expenses
+*/
 
 export async function postExpense(expenseData) {
   const response = await axios.post(BACKEND_URL + '/api/expenses/add', expenseData);
@@ -17,12 +16,12 @@ export async function postExpense(expenseData) {
   return id;
 }
 
-//----
-// HTTP GET method to fetch all expenses
-//----
+/*-----------------------------------------------------------------------------
+  HTTP GET method to fetch all expenses
+*/
 
 export async function getExpenses() {
-  const response = await axios.get(BACKEND_URL + '/api/expenses/get-all')
+  const response = await axios.get(BACKEND_URL + '/api/expenses/get')
   const expenses = [];
   
   console.log('getExpenses->response.data', response.data);
@@ -39,17 +38,17 @@ export async function getExpenses() {
   return expenses;
 }
 
-//----
-// HTTP UPDATE method to replace expense data on existing id
-//----
+/*-----------------------------------------------------------------------------
+  HTTP UPDATE method to replace expense data on existing id
+*/
 
 export function updateExpense(id, expenseData) {
   return axios.put(BACKEND_URL + `/api/expenses/${id}/edit`, expenseData);
 }
 
-//----
-// HTTP DELETE method to delete expense record 
-//----
+/*-----------------------------------------------------------------------------
+  HTTP DELETE method to delete expense record 
+*/
 
 export function deleteExpense(id) {
   return axios.delete(BACKEND_URL + `/api/expenses/${id}/delete`);
