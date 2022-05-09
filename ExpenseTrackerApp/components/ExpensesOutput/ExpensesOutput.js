@@ -15,9 +15,6 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText, isAllCategorie
   const [pickerItems, setPickerItems] = useState([]);
   const [filtered, setFiltered] = useState([...expenses]);
 
-  // console.log(expenses)
-  // console.log(filtered)
-
   // Check if there is any expense yet.
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
@@ -36,25 +33,19 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText, isAllCategorie
     expenses.forEach((item) => {
       array.push(item.category);
     });
-    console.log('array', array);
     const unique = [...new Set(array)];
-    console.log("useEffect->unique:", unique);
+    // console.log("useEffect->unique:", unique);
     setPickerItems(unique);
   }, [expenses]);
 
   // Updates selected category item from dropdown menu
 
   useEffect(() => {
-    console.log("ExpensesOutput-->pickerValue", pickerValue);
+    // console.log("ExpensesOutput-->pickerValue", pickerValue);
 
     const filteredCategoryItems = expenses.filter((expense) => {
       return expense.category === pickerValue;
     });
-
-    console.log(
-      "ExpensesOutput-->filteredCategoryItems",
-      filteredCategoryItems
-    );
     setFiltered([...filteredCategoryItems]);
   }, [pickerValue, expenses]);
 

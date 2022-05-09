@@ -17,7 +17,7 @@ import LoadingOverlay from '../components/commonUI/LoadingOverlay';
 import ErrorOverlay from '../components/commonUI/ErrorOverlay';
 import { ExpensesContext } from "./../store/ExpensesContext";
 import { GlobalColors } from "../utilities/colors";
-import { deleteExpense, postExpense } from '../api/expenses-api';
+import { deleteExpense, postExpense, updateExpense } from '../api/expenses-api';
 import {
   REMOVE_EXPENSE,
   EDIT_EXPENSE,
@@ -62,6 +62,7 @@ function ManageExpense({ route, navigation }) {
     setIsSaving(true)
     try {
       if (isEditing) {
+        await updateExpense(editedExpenseId, expenseData, token)
         dispatch({
           type: EDIT_EXPENSE,
           payload: {
@@ -70,7 +71,6 @@ function ManageExpense({ route, navigation }) {
           },
         })
         navigation.goBack();
-        await updateExpense(editedExpenseId, expenseData, token)
       } else {
         const id = await postExpense(expenseData, token)
         dispatch({ 
