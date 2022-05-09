@@ -24,6 +24,8 @@ import {
   ADD_EXPENSE,
 } from "../store/ExpensesReducer";
 
+import { UserContext } from '../store/UserContext';
+
 function ManageExpense({ route, navigation }) {
   const { expenses, dispatch } = useContext(ExpensesContext);
   
@@ -34,6 +36,8 @@ function ManageExpense({ route, navigation }) {
   const isEditing = !!editedExpenseId; // Convert value to boolean
 
   const selectedExpense = expenses.find((exp) => exp.id === editedExpenseId);
+
+  const token = useContext(UserContext);
 
   //---
   // Error handler
@@ -65,10 +69,9 @@ function ManageExpense({ route, navigation }) {
             data: expenseData,
           },
         })
-        await updateExpense(editedExpenseId, expenseData)
+        await updateExpense(editedExpenseId, expenseData, token)
       } else {
-        const id = await postExpense(expenseData)
-        // dispatch({ type: ADD_EXPENSE, payload: expenseData });
+        const id = await postExpense(expenseData, token)
         dispatch({ type: ADD_EXPENSE, payload: {...expenseData, id: id} });
       }
       navigation.goBack();
@@ -84,7 +87,7 @@ function ManageExpense({ route, navigation }) {
   const deleteExpenseHandler = async () => {
     setIsSaving(true)
     try {
-      await deleteExpense(editedExpenseId)
+      await deleteExpense(editedExpenseId, token)
       dispatch({ type: REMOVE_EXPENSE, payload: editedExpenseId });
       navigation.goBack();
     } catch (error) {
