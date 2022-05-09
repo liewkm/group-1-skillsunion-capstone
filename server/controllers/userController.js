@@ -11,7 +11,6 @@ class UserController {
     const emailAddress = req.email;
 
     if (uid && emailAddress) {
-      // use the service layer
       const result = await userService.findOrCreateUser(
         uid,
         userName,
@@ -25,11 +24,13 @@ class UserController {
       //   data: result.data,
       // });
     } else {
-      res.status(400); // bad request
+      res.status(400); 
       return res.json({
         message: "Incorrect user inputs, non-existing uid/emailAddress",
       });
     }
+
+    
   }
 }
 

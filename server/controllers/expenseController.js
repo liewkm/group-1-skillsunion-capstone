@@ -8,9 +8,6 @@ class ExpenseController {
 
     try {
       const result = await expenseService.getExpenses(uid);
-
-      console.log("controller getExpenses Results: ", result);
-
       return res
         .status(result.status)
         .json({ message: result.message, data: result.data });
@@ -37,7 +34,6 @@ class ExpenseController {
           description,
           categoryType
         );
-
         return res
           .status(result.status)
           .json({ message: result.message, data: result.data });
