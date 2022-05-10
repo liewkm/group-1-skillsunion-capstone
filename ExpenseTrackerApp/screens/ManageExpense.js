@@ -17,12 +17,14 @@ import LoadingOverlay from '../components/commonUI/LoadingOverlay';
 import ErrorOverlay from '../components/commonUI/ErrorOverlay';
 import { ExpensesContext } from "./../store/ExpensesContext";
 import { GlobalColors } from "../utilities/colors";
-import { deleteExpense, postExpense } from '../api/expenses-api';
+import { deleteExpense, postExpense, updateExpense } from '../api/expenses-api';
 import {
   REMOVE_EXPENSE,
   EDIT_EXPENSE,
   ADD_EXPENSE,
 } from "../store/ExpensesReducer";
+
+import { UserContext } from '../store/UserContext';
 
 function ManageExpense({ route, navigation }) {
   const { expenses, dispatch } = useContext(ExpensesContext);
@@ -34,6 +36,8 @@ function ManageExpense({ route, navigation }) {
   const isEditing = !!editedExpenseId; // Convert value to boolean
 
   const selectedExpense = expenses.find((exp) => exp.id === editedExpenseId);
+
+  const token = useContext(UserContext);
 
   //---
   // Error handler
@@ -58,6 +62,7 @@ function ManageExpense({ route, navigation }) {
     setIsSaving(true)
     try {
       if (isEditing) {
+        await updateExpense(editedExpenseId, expenseData, token)
         dispatch({
           type: EDIT_EXPENSE,
           payload: {
@@ -65,13 +70,18 @@ function ManageExpense({ route, navigation }) {
             data: expenseData,
           },
         })
-        await updateExpense(editedExpenseId, expenseData)
+        navigation.goBack();
       } else {
-        const id = await postExpense(expenseData)
-        // dispatch({ type: ADD_EXPENSE, payload: expenseData });
-        dispatch({ type: ADD_EXPENSE, payload: {...expenseData, id: id} });
+        const id = await postExpense(expenseData, token)
+        dispatch({ 
+          type: ADD_EXPENSE, 
+          payload: {
+            ...expenseData, 
+            id: id} 
+        });
+        navigation.goBack();
       }
-      navigation.goBack();
+      // navigation.goBack();
     } catch (error) {
       setError(`Could not ${isEditing ? 'update' : 'add'} expense`)
       setIsSaving(false)
@@ -84,7 +94,7 @@ function ManageExpense({ route, navigation }) {
   const deleteExpenseHandler = async () => {
     setIsSaving(true)
     try {
-      await deleteExpense(editedExpenseId)
+      await deleteExpense(editedExpenseId, token)
       dispatch({ type: REMOVE_EXPENSE, payload: editedExpenseId });
       navigation.goBack();
     } catch (error) {

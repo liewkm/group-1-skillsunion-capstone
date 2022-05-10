@@ -6,12 +6,15 @@ import { GET_ALL_EXPENSE } from '../store/ExpensesReducer';
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 import ErrorOverlay from '../components/commonUI/ErrorOverlay'
 import LoadingOverlay from '../components/commonUI/LoadingOverlay'
+import { UserContext } from '../store/UserContext';
 
 function RecentExpenses() {
   const { expenses, dispatch } = useContext(ExpensesContext);
 
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState()
+
+  const token = useContext(UserContext);
 
   const recentExpenses = expenses.filter((expense) => {
     const today = new Date();
@@ -27,7 +30,7 @@ function RecentExpenses() {
     async function doGetExpenses() {
       setIsLoading(true)
       try {
-        const data = await getExpenses()
+        const data = await getExpenses(token)
         dispatch({ type: GET_ALL_EXPENSE, payload: data })
       } catch (error) {
         setError('Could not get expenses')

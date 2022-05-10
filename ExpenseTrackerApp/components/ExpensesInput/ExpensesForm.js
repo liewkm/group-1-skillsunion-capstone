@@ -90,7 +90,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       category: inputs.category,
     };
 
-    console.log("******** inputs object: ", inputs);
+    // console.log("******** inputs object: ", inputs);
 
     const validAmount = !isNaN(data.amount) && data.amount > 0;
     const validDate = data.date.toString() !== "Invalid Date";
@@ -140,7 +140,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     async function doGetUpcList() {
       try {
         const data = await getUpcList()
-        console.log(data);
         setUpcList(data)
       } catch (error) {
         console.log(error);
@@ -206,7 +205,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           style={styles.picker}
           dropdownIconColor={GlobalColors.primary100}
           onValueChange={(itemValue) => {
-            console.log('itemValue', itemValue)
             setInputs((current) => {
               return { ...current, ['category']: itemValue };
             });

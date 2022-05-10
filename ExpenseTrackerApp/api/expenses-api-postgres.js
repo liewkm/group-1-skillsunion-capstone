@@ -3,15 +3,29 @@
 */
 
 import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from '../store/UserContext';
 
-const BACKEND_URL = 'postgres://kbvhaywagrypyq:04ac20b125a7a0be031f4c99e296b371d31705f0ae07abd02bf23fabda3bf1cc@ec2-44-194-92-192.compute-1.amazonaws.com:5432/dbluvk65ld9kle'
+// Use local IP address if 'localhost' does not work
+const BACKEND_URL = 'http://localhost:5000'
 
 /*-----------------------------------------------------------------------------
   HTTP POST method to add new expenses
 */
 
-export async function postExpense(expenseData) {
-  const response = await axios.post(BACKEND_URL + '/api/expenses/add', expenseData);
+export async function postExpense(expenseData, token) {
+  console.log('postExpense->expenseData:', expenseData);
+  const body = {
+    expenseDate: expenseData.date,
+    expenseAmount: expenseData.amount,
+    description: expenseData.description,
+    categoryType: expenseData.category
+  }
+  const response = await axios.post(BACKEND_URL + '/api/expense/add', body, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
   const id = response.data.name;
   return id;
 }
@@ -20,21 +34,26 @@ export async function postExpense(expenseData) {
   HTTP GET method to fetch all expenses
 */
 
-export async function getExpenses() {
-  const response = await axios.get(BACKEND_URL + '/api/expenses/get')
+export async function getExpenses(token) {
+  console.log('getExpenses->token', token);
+
+  const response = await axios.get(BACKEND_URL + '/api/expense/get', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
   const expenses = [];
-  
-  console.log('getExpenses->response.data', response.data);
-  for (const key in response.data) {
+  for (const item of response.data.data) {
     const expenseObj = {
-      id: key,
-      amount: response.data[key].amount,
-      date: new Date(response.data[key].date),
-      description: response.data[key].description,
-      category: response.data[key].category,
+      id: item.id,
+      amount: parseFloat(item.expenseAmount),
+      date: new Date(item.expenseDate),
+      description: item.description,
+      category: item.Categories[0].type,
     }
     expenses.push(expenseObj)
   }
+  console.log('getExpenses->expenses:', expenses);
   return expenses;
 }
 
@@ -42,14 +61,29 @@ export async function getExpenses() {
   HTTP UPDATE method to replace expense data on existing id
 */
 
-export function updateExpense(id, expenseData) {
-  return axios.put(BACKEND_URL + `/api/expenses/${id}/edit`, expenseData);
+export function updateExpense(id, expenseData, token) {
+  const body = {
+    expenseDate: expenseData.date,
+    expenseAmount: expenseData.amount,
+    description: expenseData.description,
+    categoryType: expenseData.category
+  }
+  return axios.put(BACKEND_URL + `/api/expense/${id}/edit`, body, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 }
 
 /*-----------------------------------------------------------------------------
   HTTP DELETE method to delete expense record 
 */
 
-export function deleteExpense(id) {
-  return axios.delete(BACKEND_URL + `/api/expenses/${id}/delete`);
+export function deleteExpense(id, token) {
+  console.log('deleteExpense->id:', id);
+  return axios.delete(BACKEND_URL + `/api/expense/${id}/delete`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 }
