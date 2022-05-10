@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   expenseItem: {
     padding: 12,
-    marginVertical: 8,
+    marginVertical: 5,
     backgroundColor: GlobalColors.primary400,
     flexDirection: 'row',
     justifyContent: 'space-between',
