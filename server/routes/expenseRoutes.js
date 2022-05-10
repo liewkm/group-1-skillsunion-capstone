@@ -13,6 +13,9 @@ const userController = new UserController();
 - route("/add") description: add single expense per uid
 - route("/:expenseId/edit") description: edit single expenseId per uid 
 - route("/:expenseId/delete") description: delete single expenseId per uid 
+
+GET POST PUT DELETE routes execution will always pass thru userController 
+before expenseController 
 */
 
 router

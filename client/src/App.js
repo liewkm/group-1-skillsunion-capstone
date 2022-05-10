@@ -24,14 +24,11 @@ function App() {
         // https://react-native-async-storage.github.io/async-storage/docs/install/
 
         // get token from firebase auth
-
         console.log("userCred token, auth", userCred, token, auth);
-
 
         userCred.getIdToken().then((token) => {
           setToken(token);
         });
-
       }
       console.log("token, auth", token, auth);
     });

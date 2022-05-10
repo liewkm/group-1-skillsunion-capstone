@@ -1,36 +1,34 @@
-// control logic and Return results from service.model
-
-// import service
 const userService = require("../services/userService");
 
-// establish the Controller first, then userService
+// Control input logic, UserController --> userService --> next()
 class UserController {
   async findOrCreateUser(req, res, next) {
     const uid = req.uid;
     const userName = req.user;
     const emailAddress = req.email;
 
-    if (uid && emailAddress) {
-      const result = await userService.findOrCreateUser(
-        uid,
-        userName,
-        emailAddress
-      );
-
-      next();
-      // return res.json({
-      //   status: result.status,
-      //   message: result.message,
-      //   data: result.data,
-      // });
-    } else {
-      res.status(400); 
-      return res.json({
-        message: "Incorrect user inputs, non-existing uid/emailAddress",
-      });
+    try {
+      if (uid && emailAddress) {
+        const result = await userService.findOrCreateUser(
+          uid,
+          userName,
+          emailAddress
+        );
+        next();
+      } else {
+        res.status(400);
+        return res.json({
+          message: "Incorrect user inputs, non-existing uid/emailAddress",
+        });
+      }
+    } catch (error) {
+      if (error.name === "SequelizeValidationError") {
+        const messages = Object.values(error.errors).map((val) => val.message);
+        return res.status(400).json({ sucess: false, error: messages });
+      } else {
+        return res.status(500).json({ sucess: false, error: error });
+      }
     }
-
-    
   }
 }
 

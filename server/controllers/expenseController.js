@@ -1,6 +1,9 @@
-// control logic flow and return results from service.model
-
 const expenseService = require("../services/expenseService");
+
+/*
+Control expense input logic & user id, expenseController --> expenseService --> model
+expenseService: getExpenses / addExpense / editExpense / deleteExpense
+*/
 
 class ExpenseController {
   async getExpenses(req, res) {
