@@ -26,7 +26,7 @@ export async function postExpense(expenseData, token) {
       Authorization: `Bearer ${token}`
     }
   });
-  const id = response.data.name;
+  const id = response.data.data.id;
   return id;
 }
 
