@@ -3,15 +3,31 @@
 */
 
 import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from '../store/UserContext';
 
-const BACKEND_URL = 'https://expensereactnative-b8ec4-default-rtdb.asia-southeast1.firebasedatabase.app'
+// Use local IP address if 'localhost' does not work
+// const BACKEND_URL = 'http://192.168.31.222:5000'
+const BACKEND_URL = 'https://expense-react-native-db.herokuapp.com'
+
 
 /*-----------------------------------------------------------------------------
   HTTP POST method to add new expenses
 */
 
 export async function postExpense(expenseData, token) {
-  const response = await axios.post(BACKEND_URL + '/expenses.json', expenseData);
+  console.log('postExpense->expenseData:', expenseData);
+  const body = {
+    expenseDate: expenseData.date,
+    expenseAmount: expenseData.amount,
+    description: expenseData.description,
+    categoryType: expenseData.category
+  }
+  const response = await axios.post(BACKEND_URL + '/api/expense/add', body, {
+    headers: {
+      Authorization: `Bearer ${token}`, "User-Agent": "axios 0.21.1"
+    }
+  });
   const id = response.data.name;
   return id;
 }
@@ -21,20 +37,25 @@ export async function postExpense(expenseData, token) {
 */
 
 export async function getExpenses(token) {
-  const response = await axios.get(BACKEND_URL + '/expenses.json')
+  console.log('getExpenses->token', token);
+
+  const response = await axios.get(BACKEND_URL + '/api/expense/get', {
+    headers: {
+      Authorization: `Bearer ${token}`, "User-Agent": "axios 0.21.1"
+    }
+  })
   const expenses = [];
-  
-  console.log('getExpenses->response.data', response.data);
-  for (const key in response.data) {
+  for (const item of response.data.data) {
     const expenseObj = {
-      id: key,
-      amount: response.data[key].amount,
-      date: new Date(response.data[key].date),
-      description: response.data[key].description,
-      category: response.data[key].category,
+      id: item.id,
+      amount: parseFloat(item.expenseAmount),
+      date: new Date(item.expenseDate),
+      description: item.description,
+      category: item.Categories[0].type,
     }
     expenses.push(expenseObj)
   }
+  console.log('getExpenses->expenses:', expenses);
   return expenses;
 }
 
@@ -43,8 +64,17 @@ export async function getExpenses(token) {
 */
 
 export function updateExpense(id, expenseData, token) {
-  console.log('updateExpense->id', id);
-  return axios.put(BACKEND_URL + `/expenses/${id}.json`, expenseData);
+  const body = {
+    expenseDate: expenseData.date,
+    expenseAmount: expenseData.amount,
+    description: expenseData.description,
+    categoryType: expenseData.category
+  }
+  return axios.put(BACKEND_URL + `/api/expense/${id}/edit`, body, {
+    headers: {
+      Authorization: `Bearer ${token}`, "User-Agent": "axios 0.21.1"
+    }
+  });
 }
 
 /*-----------------------------------------------------------------------------
@@ -52,5 +82,10 @@ export function updateExpense(id, expenseData, token) {
 */
 
 export function deleteExpense(id, token) {
-  return axios.delete(BACKEND_URL + `/expenses/${id}.json`);
+  console.log('deleteExpense->id:', id);
+  return axios.delete(BACKEND_URL + `/api/expense/${id}/delete`, {
+    headers: {
+      Authorization: `Bearer ${token}`, "User-Agent": "axios 0.21.1"
+    }
+  });
 }

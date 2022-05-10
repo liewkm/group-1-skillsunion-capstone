@@ -7,7 +7,9 @@ import { useContext } from 'react';
 import { UserContext } from '../store/UserContext';
 
 // Use local IP address if 'localhost' does not work
-const BACKEND_URL = 'http://localhost:5000'
+// const BACKEND_URL = 'http://localhost:5000'
+const BACKEND_URL = 'https://expense-react-native-db.herokuapp.com'
+
 
 /*-----------------------------------------------------------------------------
   HTTP POST method to add new expenses
@@ -23,7 +25,7 @@ export async function postExpense(expenseData, token) {
   }
   const response = await axios.post(BACKEND_URL + '/api/expense/add', body, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`, "User-Agent": "axios 0.21.1"
     }
   });
   const id = response.data.name;
@@ -39,7 +41,7 @@ export async function getExpenses(token) {
 
   const response = await axios.get(BACKEND_URL + '/api/expense/get', {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`, "User-Agent": "axios 0.21.1"
     }
   })
   const expenses = [];
@@ -70,7 +72,7 @@ export function updateExpense(id, expenseData, token) {
   }
   return axios.put(BACKEND_URL + `/api/expense/${id}/edit`, body, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`, "User-Agent": "axios 0.21.1"
     }
   });
 }
@@ -83,7 +85,7 @@ export function deleteExpense(id, token) {
   console.log('deleteExpense->id:', id);
   return axios.delete(BACKEND_URL + `/api/expense/${id}/delete`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`, "User-Agent": "axios 0.21.1"
     }
   });
 }

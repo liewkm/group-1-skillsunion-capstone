@@ -71,8 +71,8 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
-serviceAccKey.json
-firebase-config.js
+#serviceAccKey.json
+#firebase-config.js
 
 # client frontend mock folder
 client/
