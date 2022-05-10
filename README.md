@@ -86,5 +86,7 @@ Project structure:
 
 ## Documentation
 `useReducer` (https://beta.reactjs.org/apis/usereducer)
+
 `useContext` (https://beta.reactjs.org/apis/usecontext)
+
 `createContext` (https://beta.reactjs.org/apis/createcontext)
