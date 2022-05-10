@@ -16,7 +16,7 @@ const BACKEND_URL = 'http://localhost:5000'
 export async function postExpense(expenseData, token) {
   console.log('postExpense->expenseData:', expenseData);
   const body = {
-    expenseDate: expenseData.date,
+    expenseDate: expenseData.date.toISOString().substring(0, 10 ),
     expenseAmount: expenseData.amount,
     description: expenseData.description,
     categoryType: expenseData.category

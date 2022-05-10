@@ -111,3 +111,5 @@ dist
 # Lock files
 yarn.lock
 package-lock.json
+server/package-lock.json
+server/yarn.lock
