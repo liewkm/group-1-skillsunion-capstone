@@ -19,12 +19,12 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
-// Import model(s)
 const User = require("./user.model")(sequelize);
 const Expense = require("./expense.model")(sequelize);
 const Category = require("./category.model")(sequelize);
 const ExpenseCategory = require("./expense_category.model")(sequelize);
 
+// Create/Sync models in the DB
 User.sync({ alter: true }).then(() => console.log("User Database is ready"));
 Expense.sync({ alter: true }).then(() =>
   console.log("Expense Database is ready")
@@ -36,7 +36,7 @@ Category.sync({ alter: true }).then(() => {
   console.log("Category Database is ready");
 });
 
-// Create associations
+// Create table associations
 User.hasMany(Expense, {
   foreignKey: "userId",
   onDelete: "CASCADE",

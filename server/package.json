@@ -1,9 +1,9 @@
 {
-  "name": "project3-node-express-sequelize-pgres",
+  "name": "node-express-sequelize-pgres-react-native-expense",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "author": "Cahoot 3 Group 1",
+  "author": "Cahoot 3 Group 1 - LeslieChiang",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.2",

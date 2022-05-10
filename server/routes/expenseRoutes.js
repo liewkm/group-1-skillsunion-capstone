@@ -15,27 +15,21 @@ const userController = new UserController();
 - route("/:expenseId/delete") description: delete single expenseId per uid 
 
 GET POST PUT DELETE routes execution will always pass thru userController 
-before expenseController 
-*/
-
+before expenseController  */
 router
   .route("/get")
-  // .get((req, res) => res.send("You have called the FETCH EXPENSES route!"))
   .get(userController.findOrCreateUser, expenseController.getExpenses);
 
 router
   .route("/add")
-  // .get((req, res) => res.send("You have called the ADD EXPENSES route!"))
   .post(userController.findOrCreateUser, expenseController.addExpense);
 
 router
   .route("/:expenseId/edit")
-  // .get((req, res) => res.send("You have called the EDIT EXPENSES route!"))
   .put(userController.findOrCreateUser, expenseController.editExpense);
 
 router
   .route("/:expenseId/delete")
-  // .get((req, res) => res.send("You have called the DELETE EXPENSE route!"))
   .delete(userController.findOrCreateUser, expenseController.deleteExpense);
 
 module.exports = router;
