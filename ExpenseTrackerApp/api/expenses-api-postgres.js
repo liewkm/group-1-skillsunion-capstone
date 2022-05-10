@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import { UserContext } from '../store/UserContext';
 
 // Use local IP address if 'localhost' does not work
-const BACKEND_URL = 'http://192.168.1.183:5000'
+const BACKEND_URL = 'http://localhost:5000'
 
 /*-----------------------------------------------------------------------------
   HTTP POST method to add new expenses
@@ -42,9 +42,7 @@ export async function getExpenses(token) {
       Authorization: `Bearer ${token}`
     }
   })
-
   const expenses = [];
-  
   for (const item of response.data.data) {
     const expenseObj = {
       id: item.id,
