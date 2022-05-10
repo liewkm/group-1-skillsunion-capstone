@@ -75,7 +75,7 @@ serviceAccKey.json
 firebase-config.js
 
 # client frontend mock folder
-client/
+client
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
