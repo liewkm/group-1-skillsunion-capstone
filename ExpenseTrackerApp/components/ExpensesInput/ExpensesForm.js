@@ -90,7 +90,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       category: inputs.category,
     };
 
-    console.log("******** inputs object: ", inputs);
+    // console.log("******** inputs object: ", inputs);
 
     const validAmount = !isNaN(data.amount) && data.amount > 0;
     const validDate = data.date.toString() !== "Invalid Date";
@@ -140,7 +140,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     async function doGetUpcList() {
       try {
         const data = await getUpcList()
-        console.log(data);
         setUpcList(data)
       } catch (error) {
         console.log(error);
@@ -206,7 +205,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           style={styles.picker}
           dropdownIconColor={GlobalColors.primary100}
           onValueChange={(itemValue) => {
-            console.log('itemValue', itemValue)
             setInputs((current) => {
               return { ...current, ['category']: itemValue };
             });
@@ -235,13 +233,13 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         invalid={!validDescp}
       />
       <View style={styles.buttonRow}>
-        <Button style={styles.button} onPress={onCancel} mode='flat'>
+        <Button style={styles.button} onPress={onCancel}>
           CANCEL
         </Button>
-        <IconButton style={styles.button} onPress={() => setIsCameraVisible(true)}
-          icon='camera'
+        <IconButton onPress={() => setIsCameraVisible(true)} 
+          icon='barcode-outline'
           color={GlobalColors.primary50}
-          size={38}
+          size={35}
         />
         <Button style={styles.button} onPress={submitHandler}>
           {submitBtnLabel}
@@ -263,12 +261,12 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         }}
       >
         <View style={styles.centeredView}>
-          <View stle={styles.modalView}>
+          {/* <View stle={styles.modalView}> */}
             <BarcodeScanner 
               scanHandler={scanHandler}
               setIsCameraVisible={setIsCameraVisible}
             />
-          </View>
+          {/* </View> */}
         </View>
       </Modal>
       
@@ -341,26 +339,33 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     margin: 8,
     overflow: 'hidden',
-    minWidth : "49%"
+    minWidth : "49%",
+    backgroundColor: GlobalColors.primary50,
   },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   }, 
+  // modalView: {
+  //   margin: 20,
+  //   backgroundColor: 'cyan',
+  //   borderRadius: 20,
+  //   padding: 35,
+  //   alignItems: "center",
+  //   shadowColor: "#000",
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 2
+  //   },
+  //   shadowOpacity: 0.25,
+  //   shadowRadius: 4,
+  //   elevation: 5
+  // },
   modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
+    width: 350,
+    height: 400,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
     elevation: 5
   },
 });

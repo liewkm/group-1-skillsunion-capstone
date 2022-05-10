@@ -1,26 +1,26 @@
-/*-----------------------------------------------------------------------------
+/*----  
   API controller methods
-*/
+----*/
 
 import axios from 'axios';
 
 const BACKEND_URL = 'https://expensereactnative-b8ec4-default-rtdb.asia-southeast1.firebasedatabase.app'
 
-/*-----------------------------------------------------------------------------
-  HTTP POST method to add new expenses
-*/
+//----
+// HTTP POST method to add new expenses
+//----
 
-export async function postExpense(expenseData, token) {
+export async function postExpense(expenseData) {
   const response = await axios.post(BACKEND_URL + '/expenses.json', expenseData);
   const id = response.data.name;
   return id;
 }
 
-/*-----------------------------------------------------------------------------
-  HTTP GET method to fetch all expenses
-*/
+//----
+// HTTP GET method to fetch all expenses
+//----
 
-export async function getExpenses(token) {
+export async function getExpenses() {
   const response = await axios.get(BACKEND_URL + '/expenses.json')
   const expenses = [];
   
@@ -38,19 +38,18 @@ export async function getExpenses(token) {
   return expenses;
 }
 
-/*-----------------------------------------------------------------------------
-  HTTP UPDATE method to replace expense data on existing id
-*/
+//----
+// HTTP UPDATE method to replace expense data on existing id
+//----
 
-export function updateExpense(id, expenseData, token) {
-  console.log('updateExpense->id', id);
+export function updateExpense(id, expenseData) {
   return axios.put(BACKEND_URL + `/expenses/${id}.json`, expenseData);
 }
 
-/*-----------------------------------------------------------------------------
-  HTTP DELETE method to delete expense record 
-*/
+//----
+// HTTP DELETE method to delete expense record 
+//----
 
-export function deleteExpense(id, token) {
+export function deleteExpense(id) {
   return axios.delete(BACKEND_URL + `/expenses/${id}.json`);
 }

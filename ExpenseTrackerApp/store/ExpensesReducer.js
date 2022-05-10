@@ -17,7 +17,7 @@ export const GET_ALL_EXPENSE = 'GET_EXPENSE';
 */
 
 function ExpensesReducer(state, action) {
-  console.log('ExpensesReducer->action', action);
+  console.log('ExpensesReducer->action.type', action.type);
   switch (action.type) {
     // payload -> new expense data
 

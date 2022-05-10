@@ -20,6 +20,16 @@ function ExpensesOverview() {
         headerTintColor: GlobalColors.primary100,
         tabBarStyle: { backgroundColor: GlobalColors.primary700 },
         tabBarActiveTintColor: GlobalColors.accent500,
+        headerLeft: ({ tintColor }) => (
+          <IconButton
+            icon="power-outline"
+            size={28}
+            color={tintColor}
+            onPress={() => {
+              navigation.navigate("Logout");
+            }}
+          />
+        ),
         headerRight: ({ tintColor }) => (
           <IconButton
             icon="add"
