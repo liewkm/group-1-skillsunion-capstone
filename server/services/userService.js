@@ -1,18 +1,15 @@
-// execute to DB model
-
 const { User } = require("../models");
-User.sync({ alter: true }).then(() => console.log("User Database is ready"));
 
+/* User service module that check if user exist in the table, else create 
+  user {id, userName, emailAddress}, require header decodeToken uid as id. 
+  userName can be null */
 module.exports = {
-  // Check if user exist in USER table, else create user in USER table
   findOrCreateUser: async (uid, userName, emailAddress) => {
     let result = {
       message: null,
       status: null,
       data: null,
     };
-
-    console.log("User details input: ", uid, userName, emailAddress); // log input
 
     const [user, created] = await User.findOrCreate({
       where: { id: uid, userName: userName, emailAddress: emailAddress },
@@ -26,10 +23,6 @@ module.exports = {
       result.status = 200;
       result.message = `User ${user.id} FOUND in USER table`;
     }
-
-    console.log(
-      `User details: ${JSON.stringify(user)} \nUser created new: ${created})`
-    );
 
     result.data = user;
     return result;

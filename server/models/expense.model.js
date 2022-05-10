@@ -9,45 +9,38 @@ module.exports = function (sequelize) {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false,
       },
-
       userId: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+        // allowNull: false,
         field: "userId",
       },
-
       expenseDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: false,
         field: "expenseDate",
       },
-
       expenseAmount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         field: "expenseAmount",
       },
-
       description: {
         type: DataTypes.STRING,
         allowNull: false,
         field: "description",
       },
-
       UPC_input: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: "NULL",
         field: "UPC_input",
       },
-
       createdAt: {
         type: DataTypes.DATE,
         field: "created_at",
       },
-
       updatedAt: {
         type: DataTypes.DATE,
         field: "updated_at",

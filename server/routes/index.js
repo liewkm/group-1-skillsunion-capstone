@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const middleware = require("./middleware");
+const middleware = require("../middleware");
 const expenseRoutes = require("./expenseRoutes");
 
 const app = express();
@@ -16,6 +16,7 @@ app.use(
   })
 );
 
+// middleware for Firebase header auth decodeToken
 app.use(middleware.decodeToken);
 app.use("/api/expense", expenseRoutes);
 

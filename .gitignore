@@ -72,7 +72,10 @@ typings/
 .env
 .env.test
 serviceAccKey.json
-firebase-configORG.js
+firebase-config.js
+
+# client frontend mock folder
+client
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

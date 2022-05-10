@@ -1,43 +1,14 @@
-// execute to DB model
-const { User, Expense, ExpenseCategory, Category } = require("../models");
+const { User, Expense, Category } = require("../models");
 
-User.sync({ alter: true }).then(() => console.log("User Database is ready"));
-Expense.sync({ alter: true }).then(() =>
-  console.log("Expense Database is ready")
-);
-ExpenseCategory.sync({ alter: true }).then(() =>
-  console.log("ExpenseCategory Database is ready")
-);
-Category.sync({ alter: true }).then(() => {
-  console.log("Category Database is ready");
-  // Category.bulkCreate([
-  //   {
-  //     type: "Clothing",
-  //   },
-  //   {
-  //     type: "Computing Hardware",
-  //   },
-  //   {
-  //     type: "Food",
-  //   },
-  //   {
-  //     type: "Hobby",
-  //   },
-  //   {
-  //     type: "Household",
-  //   },
-  //   {
-  //     type: "Stationary",
-  //   },
-  //   {
-  //     type: "Social",
-  //   },
-  //   {
-  //     type: "Transport",
-  //   },
-  // ]);
-});
+/* Expense service modules that execute various function with DB as directed 
+from controller with appropriate inputs.
+Require header decodeToken uid as userId. 
 
+- expenseService.getExpenses retrieve all expenses per userId
+- expenseService.addExpense add single expense inputs to expense table and nested category table per userId
+- expenseService.editExpense edit single expense on expense table and nested category table per userId
+- expenseService.editExpense delete single expense on expense table cascade to nested category table per userId
+*/
 module.exports = {
   getExpenses: async (uid) => {
     let result = {
@@ -46,22 +17,19 @@ module.exports = {
       data: null,
     };
 
-    const allExpenses = await Expense.findAll(
-      { where: { userId: uid } },
-      { include: Category }
-    );
+    const allExpenses = await Expense.findAll({
+      where: { userId: uid },
+      include: Category,
+    });
 
-    if (allExpenses) {
+    if (allExpenses.length !== 0) {
       result.message = `All Expenses from ${uid} fetched successfully from DB`;
       result.status = 200;
       result.data = allExpenses;
-
-      console.log(`All Expenses from ${uid} fetched: `, JSON.stringify(result));
     } else {
       result.message = `Expenses from ${uid} not found!`;
       result.status = 404;
     }
-
     return result;
   },
 
@@ -82,26 +50,25 @@ module.exports = {
       where: { id: uid },
     });
 
-    const [newExpense, created] = await Expense.findOrCreate({
-      where: {
-        // userId: user.id,
-        expenseDate: expenseDate,
-        expenseAmount: expenseAmount,
-        description: description,
-      },
-    });
-
-    const category = await Category.findOrCreate({
+    const [category, createdCat] = await Category.findOrCreate({
       where: {
         type: categoryType,
       },
     });
 
-    if (created) {
-      // association
-      await user.addExpense(newExpense);
-      await category.addExpense(newExpense);
+    const [newExpense, created] = await Expense.findOrCreate({
+      where: {
+        userId: user.id,
+        expenseDate: expenseDate,
+        expenseAmount: expenseAmount,
+        description: description,
+      },
+      include: [{ model: Category, where: { type: category.type } }],
+    });
 
+    if (created) {
+      await user.addExpense(newExpense);
+      await newExpense.addCategory(category);
       await newExpense.save();
       await category.save();
 
@@ -111,12 +78,7 @@ module.exports = {
       result.status = 400;
       result.message = "Expense exists in Expense table";
     }
-
     result.data = newExpense;
-
-    console.log("Expense Result: ", JSON.stringify(result));
-    console.log(Expense, ExpenseCategory);
-
     return result;
   },
 
@@ -134,33 +96,33 @@ module.exports = {
       data: null,
     };
 
-    const updateExpense = await Expense.findOne(
-      { where: { id: expenseId, userId: uid } },
-      { include: Category }
-    );
-
-    updateExpense.set({
-      expenseDate: expenseDate,
-      expenseAmount: expenseAmount,
-      description: description,
+    const updateExpense = await Expense.findOne({
+      where: { id: expenseId },
+      include: Category,
     });
 
-    updateExpense.setCategory({ type: categoryType });
-
-    updateExpense = await updateExpense.save();
-    updateExpense.Category = await updateExpense.Category.save();
-
     if (updateExpense) {
+      updateExpense.update({
+        expenseDate: expenseDate,
+        expenseAmount: expenseAmount,
+        description: description,
+      });
+
+      if (updateExpense.Categories[0].type !== categoryType) {
+        const [category, createdCat] = await Category.findOrCreate({
+          where: { type: categoryType },
+        });
+        updateExpense.setCategories(category);
+        await updateExpense.save();
+      }
+
       result.message = `Expense ${expenseId} updated in DB`;
       result.status = 200;
       result.data = updateExpense;
-
-      console.log(`Expense ID ${expenseId} updated: `, JSON.stringify(result));
     } else {
       result.message = `Expense ID ${expenseId} not found!`;
       result.status = 404;
     }
-
     return result;
   },
 
@@ -170,14 +132,19 @@ module.exports = {
       status: null,
     };
 
-    await Expense.destroy(
-      { where: { id: expenseId, userId: uid } }
-      // { include: Category }
-    ).then((uid, expenseId, result) => {
-      result.message = `Expense ${expenseId} from ${uid} is deleted!`;
-      result.status = 200;
+    const expense = await Expense.findOne({
+      where: { id: expenseId },
+      include: Category,
     });
 
+    if (uid && expense) {
+      await Expense.destroy({ where: { id: expense.id, userId: uid } });
+      result.message = `Expense ${expenseId} from ${uid} is deleted!`;
+      result.status = 200;
+    } else {
+      result.message = `Expense ${expenseId} from ${uid} does not exist in database!`;
+      result.status = 404;
+    }
     return result;
   },
 };

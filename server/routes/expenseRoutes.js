@@ -1,41 +1,35 @@
-// Create a new set of routes for protected
+// Create a new set of routes
 const express = require("express");
-const router = express.Router(); // create route
+const router = express.Router();
 
-// Import controller
+// Import controller and instantiate new instances
 const ExpenseController = require("../controllers/expenseController");
 const UserController = require("../controllers/userController");
-
-// Instantiate a new class instance
 const expenseController = new ExpenseController();
 const userController = new UserController();
 
-// Expense routes GET POST PATCH DELETE
-//
-// route description: get all expenses per uid
-router // header decodeToken: uid
-  .route("/getAll")
-  .get((req, res) => res.send("You have called the FETCH EXPENSES route!"))
-  .get(userController.findOrCreateUser, expenseController.getExpenses);
-// .get(userController.findOrCreateUser);
-// .get(expenseController.getExpenses);
+/*  Expense-tracker GET POST PUT DELETE routes description:
+- route("/get") description: get all expenses per uid
+- route("/add") description: add single expense per uid
+- route("/:expenseId/edit") description: edit single expenseId per uid 
+- route("/:expenseId/delete") description: delete single expenseId per uid 
 
-// route description: add single expense per uid
-router // header decodeToken: uid
+GET POST PUT DELETE routes execution will always pass thru userController 
+before expenseController  */
+router
+  .route("/get")
+  .get(userController.findOrCreateUser, expenseController.getExpenses);
+
+router
   .route("/add")
-  .get((req, res) => res.send("You have called the ADD EXPENSES route!"))
   .post(userController.findOrCreateUser, expenseController.addExpense);
 
-// route description: edit single expense per uid + expenseId
-router // header decodeToken: uid + expenseId
+router
   .route("/:expenseId/edit")
-  .get((req, res) => res.send("You have called the EDIT EXPENSES route!"))
   .put(userController.findOrCreateUser, expenseController.editExpense);
 
-// route description: delete single expense per uid + expenseId
-router // header decodeToken: uid + expenseId
+router
   .route("/:expenseId/delete")
-  .get((req, res) => res.send("You have called the DELETE EXPENSE route!"))
   .delete(userController.findOrCreateUser, expenseController.deleteExpense);
 
 module.exports = router;

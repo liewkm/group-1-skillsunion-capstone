@@ -14,12 +14,20 @@ module.exports = function (sequelize) {
       expenseId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        // references: {
+        //   model: "Expense",
+        //   key: "id",
+        // },
         field: "expenseId",
       },
 
       categoryId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        // references: {
+        //   model: "Category",
+        //   key: "id",
+        // },
         field: "categoryId",
       },
 

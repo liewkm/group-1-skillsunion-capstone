@@ -1,30 +1,25 @@
-// control logic and Return results from service.model
-
-// import service
 const expenseService = require("../services/expenseService");
 
-// establish the RecipeController first, then recipeService
+/*
+Control expense input logic & user id, expenseController --> expenseService --> model
+expenseService: getExpenses / addExpense / editExpense / deleteExpense
+*/
+
 class ExpenseController {
   async getExpenses(req, res) {
     const uid = req.uid;
 
     try {
-      // use the service layer
       const result = await expenseService.getExpenses(uid);
-
-      console.log("controller getExpenses Results: ", result);
-
       return res
         .status(result.status)
         .json({ message: result.message, data: result.data });
     } catch (error) {
-      if (error.name === "ValidationError") {
+      if (error.name === "SequelizeValidationError") {
         const messages = Object.values(error.errors).map((val) => val.message);
         return res.status(400).json({ sucess: false, error: messages });
       } else {
-        return res
-          .status(500)
-          .json({ sucess: false, error: "Internal server error!" });
+        return res.status(500).json({ sucess: false, error: error });
       }
     }
   }
@@ -35,7 +30,6 @@ class ExpenseController {
 
     try {
       if (uid) {
-        // use the service layer
         const result = await expenseService.addExpense(
           uid,
           expenseDate,
@@ -43,9 +37,6 @@ class ExpenseController {
           description,
           categoryType
         );
-
-        console.log("controller addExpense Result: ", result);
-
         return res
           .status(result.status)
           .json({ message: result.message, data: result.data });
@@ -53,13 +44,11 @@ class ExpenseController {
         return res.status(400).json({ message: `uid invalid` });
       }
     } catch (error) {
-      if (error.name === "ValidationError") {
+      if (error.name === "SequelizeValidationError") {
         const messages = Object.values(error.errors).map((val) => val.message);
         return res.status(400).json({ sucess: false, error: messages });
       } else {
-        return res
-          .status(500)
-          .json({ sucess: false, error: "Internal server error!" });
+        return res.status(500).json({ sucess: false, error: error });
       }
     }
   }
@@ -71,7 +60,6 @@ class ExpenseController {
 
     try {
       if (uid && expenseId) {
-        // use the service layer
         const result = await expenseService.editExpense(
           uid,
           expenseId,
@@ -80,9 +68,6 @@ class ExpenseController {
           description,
           categoryType
         );
-
-        console.log("controller editExpense Result: ", result);
-
         return res
           .status(result.status)
           .json({ message: result.message, data: result.data });
@@ -90,13 +75,11 @@ class ExpenseController {
         return res.status(400).json({ message: `uid or expenseId invalid` });
       }
     } catch (error) {
-      if (error.name === "ValidationError") {
+      if (error.name === "SequelizeValidationError") {
         const messages = Object.values(error.errors).map((val) => val.message);
         return res.status(400).json({ sucess: false, error: messages });
       } else {
-        return res
-          .status(500)
-          .json({ sucess: false, error: "Internal server error!" });
+        return res.status(500).json({ sucess: false, error: error });
       }
     }
   }
@@ -107,17 +90,13 @@ class ExpenseController {
 
     try {
       if (uid && expenseId) {
-        // use the service layer
         const result = await expenseService.deleteExpense(uid, expenseId);
-
-        console.log("controller deleteExpense Result: ", result);
-
         return res.status(result.status).json({ message: result.message });
       } else {
         return res.status(404).json({ message: `uid or expenseId invalid` });
       }
     } catch (error) {
-      if (error.name === "ValidationError") {
+      if (error.name === "SequelizeValidationError") {
         const messages = Object.values(error.errors).map((val) => val.message);
         return res.status(400).json({ sucess: false, error: messages });
       } else {
