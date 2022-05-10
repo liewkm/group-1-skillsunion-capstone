@@ -3,8 +3,6 @@
 */
 
 import axios from 'axios';
-import { useContext } from 'react';
-import { UserContext } from '../store/UserContext';
 
 // Use local IP address if 'localhost' does not work
 // const BACKEND_URL = 'http://192.168.1.183:5000'
@@ -15,22 +13,19 @@ const BACKEND_URL = 'https://expense-react-native-db.herokuapp.com'
 */
 
 export async function postExpense(expenseData, token) {
-  // console.log('postExpense->expenseData:', expenseData);
   const body = {
     expenseDate: expenseData.date.toISOString().substring(0, 10 ),
     expenseAmount: expenseData.amount,
     description: expenseData.description,
     categoryType: expenseData.category
   }
-  console.log('postExpense->body:', body);
   const response = await axios.post(BACKEND_URL + '/api/expense/add', body, {
     headers: {
       Authorization: `Bearer ${token}`,
-      "User-Agent": "axios 0.21.1"
-    }
+      'User-Agent': 'axios 0.21.1',
+    },
   });
   const id = response.data.data.id;
-  console.log('postExpense->id:', id);
   return id;
 }
 
@@ -39,14 +34,12 @@ export async function postExpense(expenseData, token) {
 */
 
 export async function getExpenses(token) {
-  console.log('getExpenses->token', token);
-
   const response = await axios.get(BACKEND_URL + '/api/expense/get', {
     headers: {
       Authorization: `Bearer ${token}`,
-      "User-Agent": "axios 0.21.1"
-    }
-  })
+      'User-Agent': 'axios 0.21.1',
+    },
+  });
   const expenses = [];
   for (const item of response.data.data) {
     const expenseObj = {
@@ -76,8 +69,8 @@ export function updateExpense(id, expenseData, token) {
   return axios.put(BACKEND_URL + `/api/expense/${id}/edit`, body, {
     headers: {
       Authorization: `Bearer ${token}`,
-      "User-Agent": "axios 0.21.1"
-    }
+      'User-Agent': 'axios 0.21.1',
+    },
   });
 }
 
@@ -90,7 +83,7 @@ export function deleteExpense(id, token) {
   return axios.delete(BACKEND_URL + `/api/expense/${id}/delete`, {
     headers: {
       Authorization: `Bearer ${token}`,
-      "User-Agent": "axios 0.21.1"
-    }
+      'User-Agent': 'axios 0.21.1',
+    },
   });
 }

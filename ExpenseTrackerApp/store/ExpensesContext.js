@@ -1,6 +1,9 @@
-/*----  
-  Global context
-----*/
+/*-------------------------------------------------------------------  
+  Global context for storing expenses data to be shared amongst
+  various components without having to use prop-drilling. ExpensesContext
+  object passes value={{expenses, dispatch}} with useReducer hook
+  to centralise all expenses context operations
+*/
 
 import { createContext, useReducer } from 'react';
 import ExpensesReducer from './ExpensesReducer';

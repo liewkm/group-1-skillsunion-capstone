@@ -1,13 +1,12 @@
 /*-----------------------------------------------------------------------------
-  API controller methods
+  API controller methods 
+  - Copy to expenses-api.js file when using postgres backend
 */
 
 import axios from 'axios';
-import { useContext } from 'react';
-import { UserContext } from '../store/UserContext';
 
 // Use local IP address if 'localhost' does not work
-// const BACKEND_URL = 'http://192.168.1.183:5000'
+// const BACKEND_URL = 'http://localhost:5000'
 const BACKEND_URL = 'https://expense-react-native-db.herokuapp.com'
 
 /*-----------------------------------------------------------------------------

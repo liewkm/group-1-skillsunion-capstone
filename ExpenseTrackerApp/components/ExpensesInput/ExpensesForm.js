@@ -1,96 +1,89 @@
-/*----  
-  Expense input form 
-----*/
-import { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Platform,
-  Alert,
-  ScrollView,
-  Modal,
-} from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Picker } from "@react-native-picker/picker";
-
-import { GlobalColors } from "../../utilities/colors";
-import { getFormattedDate } from "../../utilities/helpers.js";
-import Button from "../commonUI/Button.js";
-import Input from "./Input";
-import BarcodeScanner from "./BarcodeScanner";
-import IconButton from "../commonUI/IconButton";
-import { getUpcList } from "../../api/upc-api";
-/*
-const DUMMY_UPC_LIST=[
-  { upc: 8887319426163, category: 'Medical', description: 'Zyrtec-R tablets', price: '12.85' },
-  { upc: 9781607747307, category: 'Books', description: 'Marie Kondo: The Life-Changing Magic of Tidying Up', price: '19.99' },
-  { upc: 8887603535953, category: 'Medical', description: 'Guardian Vitamin C 1000mg 60 tablets', price: '5.95' },
-  { upc: 8887066000067, category: 'Stationery', description: 'SureMark reinforcement rings 6mm 500pcs', price: '2.50' },
-]
+/*---------------------------------------------------------------------------  
+  Displays common input form for data entry.
+  Props:
+    onCancel       - Handler for cancel button
+    onSubmit       - Handler for Submit (add/update) button
+    submitBtnLabel - Label for Submit (add/update) button
+    defaultValues  - Values passed from parent when updating an expense 
 */
+import { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Pressable, Platform, ScrollView, Modal } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+import { getFormattedDate } from '../../utilities/helpers.js';
+import { GlobalColors } from '../../utilities/colors.js';
+import { getUpcList } from '../../api/upc-api';
+import BarcodeScanner from './BarcodeScanner';
+import IconButton from '../commonUI/IconButton';
+import Button from '../commonUI/Button';
+import Input from './Input';
+
 function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
+  
+  // States for validation
   const [validAmount, setValidAmount] = useState(true);
   const [validDate, setValidDate] = useState(true);
   const [validDescp, setValidDescp] = useState(true);
   const [validCategory, setValidCategory] = useState(true);
   const [formNotValid, setFormNotValid] = useState(false);
-
-  const [date, setDate] = useState(new Date(Date.now()));
   const [showDatePicker, setShowDatePicker] = useState(false);
-
+  
+  // States for input fields
+  const [date, setDate] = useState(new Date(Date.now())); 
   const [inputs, setInputs] = useState({
     date: defaultValues
       ? getFormattedDate(defaultValues.date)
       : getFormattedDate(date),
     amount: defaultValues ? defaultValues.amount.toString() : "",
     description: defaultValues ? defaultValues.description : "",
-    category: defaultValues ? defaultValues.category : "",
-    
+    category: defaultValues ? defaultValues.category : "",    
   });
+  // States for BarcodeScanner
   const [upcList, setUpcList] = useState([])
-
-  // State for BarcodeScanner
   const [upc, setUpc] = useState(null);                 // UPC String
   const [isUpcFound, setIsUpcFound] = useState(true);   // Is the UPC in database (true/false)
-
+  
   // State for camera modal window 
   const [isCameraVisible, setIsCameraVisible] = useState(false);
 
+  /*-----------------------------------------------------------
+    Input handlers
+  */
   const inputsChangeHandler = (inputType, enterValue) => {
     setInputs((current) => {
       return { ...current, [inputType]: enterValue };
     });
   };
+  
+  /*-----------------------------------------------------------
+    Date picker handlers
+  */
   const showMode = () => setShowDatePicker(true);
-
   const onChangeDatePicker = (event, selectedDate) => {
     if (Platform.OS === "android") {
       setShowDatePicker(false);
     }
     const currentDate = selectedDate || date;
-
     setDate(currentDate);
     let tempDate = getFormattedDate(currentDate);
-
     setInputs((current) => {
       return { ...current, ["date"]: tempDate };
     });
 
   };
 
+  /*-----------------------------------------------------------
+    Submit (add/update) button handlers
+  */
   const submitHandler = () => {
     setFormNotValid(false);
-
     const data = {
       date: new Date(inputs.date),
       amount: +inputs.amount, // + converts to number
       description: inputs.description,
       category: inputs.category,
     };
-
-    // console.log("******** inputs object: ", inputs);
 
     const validAmount = !isNaN(data.amount) && data.amount > 0;
     const validDate = data.date.toString() !== "Invalid Date";
@@ -101,7 +94,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     setValidDate(validDate);
     setValidDescp(validDescp);
     setValidCategory(validCategory);
-    // console.log(validDate, validAmount, validDescp, validCategory);
 
     if (validDate && validAmount && validDescp && validCategory) {
       onSubmit(data);
@@ -110,6 +102,12 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     }
   };
 
+  /*-----------------------------------------------------------
+    Barcode scanner button handler
+    Takes UPC string and compares it to a list of known UPCs.
+    Returns a product information and fills up input fields, 
+    or empty form is no UPC is matched
+  */
   const scanHandler = (upc) => {
     console.log('scanHandler->upc:', upc, typeof(upc));
     setUpc(upc);
@@ -133,9 +131,9 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       })
     }
   }
-
-  // Setup UPC list on component mount
-
+  /*-----------------------------------------------------------------
+    Setup UPC list for matching on component mount
+  */
   useEffect(() => {
     async function doGetUpcList() {
       try {
@@ -148,14 +146,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     doGetUpcList()
   }, [])
 
-  // Update scanned UPC data from BarCodeScanner component
-  /*
-  useEffect(() => {
-    if (route.params?.data) {
-      console.log('UPC scanned:', route.params?.data);
-    }
-  }, [route.params?.data]);
-  */
+  //-------------------------------------------------------------------  
   
   return (
     <ScrollView style={styles.container}>
@@ -236,7 +227,8 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         <Button style={styles.button} onPress={onCancel}>
           CANCEL
         </Button>
-        <IconButton onPress={() => setIsCameraVisible(true)} 
+        <IconButton
+          onPress={() => setIsCameraVisible(true)}
           icon='barcode-outline'
           color={GlobalColors.primary50}
           size={35}
@@ -245,31 +237,25 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           {submitBtnLabel}
         </Button>
       </View>
-      {upc && 
-        <Text style={styles.text}>UPC scanned: {upc}</Text>
-      }
-      {!isUpcFound && 
-        <Text style={styles.text}>NOT FOUND!</Text>
-      }
+      {upc && <Text style={styles.text}>UPC scanned: {upc}</Text>}
+      {!isUpcFound && <Text style={styles.text}>NOT FOUND!</Text>}
 
-      <Modal 
+      <Modal
         animationType='fade'
         transparent={true}
         visible={isCameraVisible}
         onRequestClose={() => {
-          setIsCameraVisible(!isCameraVisible)
+          setIsCameraVisible(!isCameraVisible);
         }}
       >
         <View style={styles.centeredView}>
-          {/* <View stle={styles.modalView}> */}
-            <BarcodeScanner 
-              scanHandler={scanHandler}
-              setIsCameraVisible={setIsCameraVisible}
-            />
-          {/* </View> */}
+          <BarcodeScanner
+            scanHandler={scanHandler}
+            setIsCameraVisible={setIsCameraVisible}
+          />
         </View>
       </Modal>
-      
+
       {formNotValid && (
         <Text style={styles.errorOutput}>
           Invalid Entry, Please Check Entry Again!

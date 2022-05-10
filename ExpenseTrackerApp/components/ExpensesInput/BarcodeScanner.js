@@ -1,3 +1,11 @@
+/*-------------------------------------------------------------------
+  BarcodeScanner component to capture barcode and returns a 
+  UPC (Unique Product Code). 
+  PROPS:
+    scanHandler - Handler for UPC data (as numerical string) to parent
+    setIsCameraVisible - Hanlder to toggle camera viewfinder modal window
+*/
+
 import { View, Text, StyleSheet } from 'react-native'
 import { useState, useEffect } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner'
@@ -7,17 +15,17 @@ function BarcodeScanner({scanHandler, setIsCameraVisible}) {
   
   const [cameraPermission, setCameraPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
-  const [upc, setUpc] = useState('No UPC scanned')
   
+  // Handler for asking camera permission
   const askCameraPermission = () => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
         setCameraPermission(status === 'granted')
     })() 
   }
+  // Handler triggered when barcode is detected in camera viewfinder
   const barCodeScannerHandler = ({ type, data }) => {
     setScanned(true);
-    // setUpc(data)
     scanHandler(data);
     console.log(`Type: ${type} UPC data: ${data}`);
     setIsCameraVisible(false);
@@ -28,27 +36,12 @@ function BarcodeScanner({scanHandler, setIsCameraVisible}) {
     askCameraPermission();
   }, [])
 
-  // Return to input form with UPC data when scan successful
-/*
-  useEffect(() => {
-    if (scanned) {
-      console.log('BarcodeScanner->useEffect upc:', upc);
-      navigation.navigate({
-        name: 'ManageExpense',
-        params: { data: upc },
-        merge: true
-      })
-    }
-  }, [scanned] )  
-*/
-
-  // Check for camera permission and return
+  // Return appropriate message according to cameraPermission status 
   if (cameraPermission === null) {
     return (<View style={styles.container}>
       <Text>Requesting camera permission</Text>
     </View>)
   }  
-  
   if (cameraPermission === false) {
     return (<View style={styles.container}>
       <Text style={{ margin: 10 }}>No access to camera</Text>
@@ -57,7 +50,8 @@ function BarcodeScanner({scanHandler, setIsCameraVisible}) {
     </View>)
   }
 
-  // Return the camera View
+  //----------------------------------------------------------------------------
+  
   return (
     <View style={styles.container}>
       <View style={styles.barcodeBox}>
@@ -69,9 +63,6 @@ function BarcodeScanner({scanHandler, setIsCameraVisible}) {
           CLOSE
         </Button>
       </View>
-      {/* <Text style={styles.text}>{upc}</Text> */}
-
-      {/* {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />} */}
     </View>
   )
 }
