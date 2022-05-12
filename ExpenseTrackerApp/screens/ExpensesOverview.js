@@ -58,7 +58,7 @@ function ExpensesOverview() {
         component={AllExpenses}
         options={{
           title: "All Expenses",
-          tabBarLabel: "All",
+          tabBarLabel: "All Dates",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="archive-sharp" size={size} color={color} />
           ),
