@@ -18,6 +18,7 @@ import { GlobalColors } from './utilities/colors';
 import ExpensesContextProvider from './store/ExpensesContext';
 import ExpensesOverview from './screens/ExpensesOverview';
 import ManageExpense from './screens/ManageExpense';
+import OnBoarding from './screens/OnBoarding';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
@@ -73,7 +74,7 @@ export default function App() {
             {/* Conditional rendering according to user authentication status */}
             {(isLoggedIn && token) ? (
               <UserContext.Provider value={token}>
-                <Stack.Navigator
+                <Stack.Navigator initialRouteName='ExpensesOverview'
                   screenOptions={{
                     headerStyle: { backgroundColor: GlobalColors.primary500 },
                     headerTintColor: 'white',
@@ -100,8 +101,13 @@ export default function App() {
                 </Stack.Navigator>
               </UserContext.Provider>
             ) : (
-              <Stack.Navigator>
+              <Stack.Navigator initialRouteName='OnBoarding'>
                 {/* Login screen */}
+                <Stack.Screen
+                  name='OnBoarding'
+                  component={OnBoarding}
+                  options={{ headerShown: false }}
+                />
                 <Stack.Screen
                   name='Login'
                   component={Login}

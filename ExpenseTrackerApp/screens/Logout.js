@@ -27,9 +27,9 @@ export default class Logout extends Component {
     };
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>
-          Confirm Logout?
-        </Text>
+        <Text style={styles.title}>NTU-SDI Cohort 3 Group 1</Text>
+        <Text style={styles.text}>{'King Mann\nManiraja\nCharles\nLeslie\nKeith\nCP'}</Text>
+        <Text style={styles.title}>Confirm Logout?</Text>
         <Text style={styles.text}>{this.state.displayName}</Text>
         <Button style={styles.button} onPress={() => this.signOut()}>
           Logout
